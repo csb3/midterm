@@ -1,0 +1,21 @@
+
+
+1. As a user, I can see featured items on the main page because...
+2. As a user, I can filter items by price because I have a specific budget in mind
+3. As a user, I can send messages to the person listing the item, because I need arrange the purchase or negotiate
+4. As a user, I can favourite items so that I can look at them later or watch for changes
+
+
+1. As an admin, I can post new items to sell
+2. As an admin, I can remove items from the website if they are no longer available, or 3. mark them as sold if they are sold
+4. Send a message in app without giving away my personal details like email and phone number
+
+
+
+users / admin
+items flag for featured
+messages
+favourites /
+
+
+set featured items to items with most favourites
