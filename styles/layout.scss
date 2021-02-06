@@ -1,9 +1,7 @@
-// See: https://sass-lang.com/
+@import "globals";
 
 body {
-  background-color: #EEE;
+  background-color: $baseColor;
+  font-family: $bodyText;
 
-  h1 {
-    color: #244751;
-  }
 }
