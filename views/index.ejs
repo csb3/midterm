@@ -25,9 +25,10 @@
   <!--Internal CSS-->
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
   <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/listings.css" type="text/css" />
 
   <!--Dummy variables for rendering-->
-  <% const users = {userID: 1}; %>
+  <% const users = {userID: undefined}; %>
 
 
 </head>
@@ -35,6 +36,31 @@
   <!-- Nav Bar (fixed) -->
   <%- include ('partials/_nav') %>
 
+  <main>
+  <!-- Rotating featured breads -->
+    <section class='featuredItems'>
+      <div>
+        <p>Featured item #1</p>
+      </div>
+      <div>
+        <p>Featured item #2</p>
+      </div>
+    </section>
+  <!-- Bread listings -->
+
+    <section class='listings'>
+    <% for (const bread of listings) { %>
+      <div class ='listingItem'>
+        <img src="<%- bread.photo_url %>" alt="A loaf of bread">
+        <div class='details'>
+          <h3><%= bread.name %></h3>
+          <p> Price: $<%= bread.price / 100 %></p>
+          <button> MORE INFO </button>
+        </div>
+      </div>
+    <% } %>
+  </section>
+  </main>
 
 
 

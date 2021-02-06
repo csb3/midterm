@@ -1,3 +1,6 @@
+//loading fake data into templates for testing, please don't remove yet -IK
+const { templateVars } = require('./testingData.js');
+
 // load .env data into process.env
 require('dotenv').config();
 
@@ -48,7 +51,7 @@ app.use("/api/widgets", widgetsRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", templateVars);
 });
 
 app.listen(PORT, () => {
