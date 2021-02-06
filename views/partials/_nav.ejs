@@ -1,24 +1,28 @@
  <header>
   <nav>
     <span>BREAD</span>
-    <% if (true) { %>
-      <button class='messages'>
-        <i class="fas fa-comments"></i>
-        MESSAGES
-      </button>
-      <button class='favourites'>
-        <i class="fas fa-heart"></i>
-        FAVOURITES
-      </button>
-      <button class='logout'>
-        <i class="fas fa-sign-out-alt"></i>
-        LOGOUT
-      </button>
-    <% } else { %>
-      <button class='login'>
-        <i class="fas fa-sign-in-alt"></i>
-        LOGIN
-      </button>
-    <% } %>
+    <div class='nav-items'>
+      <% if (true) { %>
+        <button class='messages'>
+          <i class="fas fa-comments"></i>
+          MESSAGES
+        </button>
+        <button class='favourites'>
+          <i class="fas fa-heart"></i>
+          FAVOURITES
+        </button>
+        <button class='logout'>
+          <i class="fas fa-sign-out-alt"></i>
+          LOGOUT
+        </button>
+      <% } else { %>
+        <button class='login'>
+          <i class="fas fa-sign-in-alt"></i>
+          LOGIN
+        </button>
+      <% } %>
+      </div>
   </nav>
+  <div class='banner'>
+  </div>
 </header>
