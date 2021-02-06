@@ -1,17 +1,48 @@
+<!-- Running List of variables that need to come in
+  users object - info about users:
+      users.userID = represents the id of logged in user
+
+
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Home Page</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BREAD</title>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <!--External CSS-->
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
 
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-  </head>
+  <!--Internal CSS-->
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
 
-  <body>
-    <h1>Hello World!</h1>
-  </body>
+  <!--Dummy variables for rendering-->
+  <% const users = {userID: 1}; %>
+
+
+</head>
+<body>
+  <!-- Nav Bar (fixed) -->
+  <%- include('partials/_nav.ejs') %>
+
+
+
+
+
+
+
+
+
+
+  <!--External JS-->
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+
+  <!--Internal JS-->
+  <script type="text/javascript" src="/scripts/app.js"></script>
+</body>
 </html>
