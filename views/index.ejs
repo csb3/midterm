@@ -31,12 +31,23 @@
   <main>
   <!-- Rotating featured breads -->
     <section class='featuredItems'>
-      <div>
-        <p>Featured item #1</p>
-      </div>
-      <div>
-        <p>Featured item #2</p>
-      </div>
+      <% let i = 0; %>
+      <% for (const bread of listings) { %>
+        <% if (bread.featured && i < 2 ) { %>
+          <div class='feature'>
+            <img src="<%- bread.photo_url %>" alt="A loaf of bread">
+            <div class='featureDetails'>
+              <h1><%= bread.name %></h1>
+              <span class="location"><%= bread.city %></span>
+              <p>ONLY $<%=bread.price / 100 %>!!</p>
+              <p class='featureDescription'><%= bread.description.substring(0, 200) %></p>
+              <button> BUY NOW! </button>
+            </div>
+          </div>
+          <% } %>
+        <% } %>
+
+
     </section>
   <!-- Bread listings -->
 

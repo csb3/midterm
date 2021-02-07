@@ -43,6 +43,7 @@ main {
       flex-direction: column;
       box-shadow: none;
       margin-top: 0px;
+      position: relative;
 
       h3 {
         font-family: $headersText;
@@ -90,6 +91,9 @@ main {
         letter-spacing: 0.1em;
         width: 170px;
         border-radius: 10px;
+        position: absolute;
+        bottom: -10px;
+        right: 4%;
       }
 
       button:hover {
