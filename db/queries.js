@@ -2,18 +2,18 @@
 
 const queries = {
   // USERS QUERIES
-  createUser: ``,
+  createUser: ``, // SHOULD RETURN USER USING SQL 'RETURNING *'
   makeAdmin: ``,
   loginUser: ``,
   logoutUser: ``,
 
   // MESSAGES QUERIES
-  createMessage: ``,
+  createMessage: ``, // SHOULD RETURN THE MESSAGE USING SQL 'RETURNING *'
   listMessages: ``,
   listConversations: ``,
 
   // LISTINGS QUERIES
-  createListing: ``,
+  createListing: ``, // SHOULD RETURN THE NEW LISTING USING SQL 'RETURNING *'
   browseAllListings: ``,
   browseListing: ``,
   search: ``,

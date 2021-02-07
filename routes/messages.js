@@ -4,11 +4,34 @@ const queries = require('../db/queries');
 
 module.exports = (db) => {
 
-  router.get("/", (req, res) => {
-    db.query(`SELECT * FROM users;`)
+  router.get("/create", (req, res) => {
+    db.query(queries.createMessage)
       .then(data => {
-        const users = data.rows;
-        res.json({ users });
+        // do something with the new message
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.get("/conversation", (req, res) => {
+    db.query(queries.listMessages)
+      .then(data => {
+        // list all messages in a conversation
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.get("/conversations", (req, res) => {
+    db.query(queries.listConversations)
+      .then(data => {
+        // list all conversations (no individual messages)
       })
       .catch(err => {
         res
