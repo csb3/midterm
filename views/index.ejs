@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
   <link rel="stylesheet" href="/styles/listings.css" type="text/css" />
   <link rel="stylesheet" href="/styles/features.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/search.css" type="text/css" />
 
   <!--Dummy variables for rendering-->
   <% const users = {userID: undefined}; %>
@@ -51,7 +52,14 @@
 
 
     </section>
-  <!-- Bread listings -->
+
+    <div class='listingsLabel'>
+      <h2>THE LATEST BREADS</h2>
+      <button>FILTER</button>
+      <div class='filter-options'>
+      </div>
+    </div>
+
 
     <section class='listings'>
     <% for (const bread of listings) { %>
