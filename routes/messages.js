@@ -5,9 +5,9 @@ const queries = require('../db/queries');
 module.exports = (db) => {
 
   router.get("/create", (req, res) => {
-    db.query(queries.createUser)
+    db.query(queries.createMessage)
       .then(data => {
-        // pass
+        // do something with the new message
       })
       .catch(err => {
         res
@@ -16,10 +16,10 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/makeAdmin", (req, res) => {
-    db.query(queries.makeAdmin)
+  router.get("/conversation", (req, res) => {
+    db.query(queries.listMessages)
       .then(data => {
-        // pass
+        // list all messages in a conversation
       })
       .catch(err => {
         res
@@ -28,16 +28,16 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/login/:userEmail", (req, res) => {
-    // create cookie
-    req.session.userEmail = req.params.userEmail;
+  router.get("/conversations", (req, res) => {
+    db.query(queries.listConversations)
+      .then(data => {
+        // list all conversations (no individual messages)
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
   });
-
-  router.get("/logout", (req, res) => {
-    // clear login cookie
-    req.session = null;
-  });
-
-
   return router;
 };
