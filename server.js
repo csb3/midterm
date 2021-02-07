@@ -10,6 +10,14 @@ const sass       = require("node-sass-middleware");
 const app        = express();
 const morgan     = require('morgan');
 
+// Use cookie-session for secure cookies
+const cookieSession = require('cookie-session');
+app.use(cookieSession({
+  name: 'session',
+  keys: ['dirtyYarn', 'breadalyzer'],
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
+
 // PG database client/connection setup
 const { Pool } = require('pg');
 const dbParams = require('./lib/db.js');

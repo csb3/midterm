@@ -28,12 +28,14 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/login", (req, res) => {
+  router.get("/login/:userEmail", (req, res) => {
     // create cookie
+    req.session.userEmail = req.params.userEmail;
   });
 
   router.get("/logout", (req, res) => {
-    // delete cookie
+    // clear login cookie
+    req.session = null;
   });
 
 
