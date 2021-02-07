@@ -1,19 +1,73 @@
-/*
- * All routes for Widgets are defined here
- * Since this file is loaded in server.js into api/widgets,
- *   these routes are mounted onto /widgets
- * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
- */
-
 const express = require('express');
 const router  = express.Router();
+const queries = require('../db/queries');
 
 module.exports = (db) => {
-  router.get("/", (req, res) => {
-    db.query(`SELECT * FROM users;`)
+
+  router.get("/create", (req, res) => {
+    db.query(queries.createListing)
       .then(data => {
-        const users = data.rows;
-        res.json({ users });
+        // create a new listing
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.get("/browse", (req, res) => {
+    db.query(queries.browseAllListings)
+      .then(data => {
+        // show specific listing
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.get("/browseAll", (req, res) => {
+    db.query(queries.browseListing)
+      .then(data => {
+        // show all listings
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.get("/search", (req, res) => {
+    db.query(queries.search)
+      .then(data => {
+        // search
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.get("/addFavorite", (req, res) => {
+    db.query(queries.addToFavorites)
+      .then(data => {
+        // add to favorites
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.get("/removeFavorite", (req, res) => {
+    db.query(queries.removeFavorite)
+      .then(data => {
+        // remove from favorites
       })
       .catch(err => {
         res
@@ -23,4 +77,3 @@ module.exports = (db) => {
   });
   return router;
 };
-
