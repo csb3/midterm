@@ -18,7 +18,8 @@ const queries = {
   browseListing: ``,
   search: ``,
   addToFavorites: ``,
-  removeFavorite: ``
+  removeFavorite: ``,
+  showFeatured: ``
 }
 
 module.exports = queries;
