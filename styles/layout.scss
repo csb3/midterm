@@ -3,5 +3,8 @@
 body {
   background-color: $baseColor;
   font-family: $bodyText;
+  display: flex;
+  flex-direction: column;
+  z-index: 0;
 
 }

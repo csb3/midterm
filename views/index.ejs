@@ -1,11 +1,3 @@
-<!-- Running List of variables that need to come in
-  users object - info about users:
-      users.userID = represents the id of logged in user
-
-
--->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,15 +11,18 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;1,100&display=swap" rel="stylesheet">
 
   <!--Internal CSS-->
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
   <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/listings.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/features.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/search.css" type="text/css" />
 
   <!--Dummy variables for rendering-->
-  <% const users = {userID: 1}; %>
+  <% const users = {userID: undefined}; %>
 
 
 </head>
@@ -35,6 +30,56 @@
   <!-- Nav Bar (fixed) -->
   <%- include ('partials/_nav') %>
 
+  <main>
+  <!-- Rotating featured breads -->
+    <section class='featuredItems'>
+      <% let i = 0; %>
+      <% for (const bread of listings) { %>
+        <% if (bread.featured && i < 2 ) { %>
+          <div class='feature'>
+            <h4 class='featureTag'>FEATURED</h4>
+            <img src="<%- bread.photo_url %>" alt="A loaf of bread">
+            <div class='featureDetails'>
+              <h1><%= bread.name %></h1>
+              <span class="location"><%= bread.city %></span>
+              <p>ONLY $<%=bread.price / 100 %>!!</p>
+              <p class='featureDescription'><%= bread.description.substring(0, 200) %></p>
+              <button> BUY NOW! </button>
+            </div>
+          </div>
+          <% } %>
+        <% } %>
+
+
+    </section>
+
+    <div class='listingsLabel'>
+      <h2>THE LATEST BREADS</h2>
+      <button>FILTER</button>
+      <div class='filter-options'>
+      </div>
+    </div>
+
+
+    <section class='listings'>
+    <% for (const bread of listings) { %>
+      <div class ='listingItem'>
+        <img src="<%- bread.photo_url %>" alt="A loaf of bread">
+        <div class='details'>
+          <h3><%= bread.name %></h3>
+          <span class="location"><%= bread.city %></span>
+          <p>$<%= bread.price / 100 %></p>
+          <p class='description'><%= bread.description.substring(0, 100);%>
+          <% if (bread.description.length > 100) { %>
+            . . .
+          <% } %>
+          </p>
+          <button> MORE INFO </button>
+        </div>
+      </div>
+    <% } %>
+  </section>
+  </main>
 
 
 
@@ -49,5 +94,6 @@
 
   <!--Internal JS-->
   <script type="text/javascript" src="/scripts/app.js"></script>
+  <script type="text/javascript" src="/scripts/filter.js"></script>
 </body>
 </html>
