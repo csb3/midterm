@@ -1,19 +1,13 @@
-/*
- * All routes for Users are defined here
- * Since this file is loaded in server.js into api/users,
- *   these routes are mounted onto /users
- * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
- */
-
 const express = require('express');
 const router  = express.Router();
+const queries = require('../db/queries');
 
 module.exports = (db) => {
-  router.get("/", (req, res) => {
-    db.query(`SELECT * FROM users;`)
+
+  router.get("/create", (req, res) => {
+    db.query(queries.createUser)
       .then(data => {
-        const users = data.rows;
-        res.json({ users });
+        // pass
       })
       .catch(err => {
         res
@@ -21,5 +15,27 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
+  router.get("/makeAdmin", (req, res) => {
+    db.query(queries.makeAdmin)
+      .then(data => {
+        // pass
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.get("/login", (req, res) => {
+    // create cookie
+  });
+
+  router.get("/logout", (req, res) => {
+    // delete cookie
+  });
+
+
   return router;
 };
