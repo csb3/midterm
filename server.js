@@ -5,6 +5,12 @@ const singleItem = {
   user: templateVars.user
 };
 
+// load prewritten queries -DT
+const queries = require('./db/queries');
+
+// for debugging (shows parameterized queries) -DT
+const printQuery = require('./lib/printQuery');
+
 // load .env data into process.env
 require('dotenv').config();
 
@@ -65,7 +71,28 @@ app.use("/api/messages", messagesRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
-  res.render("index", templateVars);
+  db.query(queries.browseRecentListings)
+    .then(
+      // results for recent listings
+      (recent) => {
+        templateVars.recentListings = recent.rows;
+        return db.query(queries.showFeatured);
+      }
+    )
+    .then(
+      // results for featured listings
+      (featured) => {
+        templateVars.featuredListings = featured.rows;
+        res.render("index", templateVars);
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+      }
+    );
+
+  // res.render("index", templateVars);
 });
 
 //Testing route - not for actual use. We'll hook this up properly later

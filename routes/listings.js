@@ -4,7 +4,7 @@ const queries = require('../db/queries');
 
 module.exports = (db) => {
 
-  router.get("/create", (req, res) => {
+  router.post("/create", (req, res) => {
     db.query(queries.createListing)
       .then(data => {
         // create a new listing
@@ -16,22 +16,10 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/browse", (req, res) => {
-    db.query(queries.browseAllListings)
+  router.get("/:listingID", (req, res) => {
+    db.query(queries.specificListing)
       .then(data => {
         // show specific listing
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
-
-  router.get("/browseAll", (req, res) => {
-    db.query(queries.browseListing)
-      .then(data => {
-        // show all listings
       })
       .catch(err => {
         res
