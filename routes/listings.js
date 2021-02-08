@@ -91,12 +91,18 @@ module.exports = (db) => {
 
     if (city) {
       queryParams.push(`%${city}%`);
-      queryString += `${checkModifications(modifications)} listings.city LIKE $${queryParams.length}\n`;
+      queryString += `${checkModifications(modifications)} city LIKE $${queryParams.length}\n`;
       modifications = true;
     }
 
+    // finish off query
+    const limits = 12;
+    queryParams.push(limits);
+    queryString += `ORDER BY id LIMIT $${queryParams.length};`
+
     // print out the final query that will be run, for debugging only
     printQuery(queryString, queryParams);
+
     db.query(queries.search, queryParams)
       .then(data => {
         templateVars.recentListings = data.rows;
