@@ -91,14 +91,7 @@ app.get("/", (req, res) => {
         console.log(error);
       }
     );
-
-  // res.render("index", templateVars);
 });
-
-//Testing route - not for actual use. We'll hook this up properly later
-app.get('/individual', (req, res) => {
-  res.render("listing", singleItem);
-})
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
