@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BREAD</title>
+
+  <!--External CSS-->
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;1,100&display=swap" rel="stylesheet">
+
+  <!--Internal CSS-->
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/single.css" type="text/css" />
+
+
+
+</head>
+<body>
+  <!-- Nav Bar (fixed) -->
+  <%- include ('partials/_nav') %>
+
+  <section class='titleBanner'>
+    <h1><%= item.name %> </h1>
+  </section>
+  <main>
+    <div>
+      <img src="<%- item.photo_url %>" alt="listing image">
+    </div>
+    <div class='details'>
+      <p class='userTag'>What the seller says:</p>
+      <p class="chalk">"<%= item.description %>"</p>
+      <span class='itemInfo'>
+      <% if (item.sold) { %>
+        <p class='sold'>SOLD!</p>
+      <% } else { %>
+        <p>$<%= item.price / 100 %></p>
+      <% } %>
+          <p>Posted by: <span><%= item.user_id %></span></p>
+          <p>City: <span><%= item.city %></span></p>
+          <p>Weight: <span><%= item.weight %></span></p>
+          <p>Posted: <span><%= item.creation_date %></span></p>
+      </span>
+          <div class="message">
+            <button>CONTACT THE SELLER</button>
+            <form>
+            <label for="buyerMessage">Enter your message here:</label>
+            <textarea name="message" id="buyerMessage" cols="30" rows="10"></textarea>
+            <button type="submit">SEND</button>
+
+            </form>
+          </div>
+        </div>
+
+  </main>
+
+
+
+
+
+
+
+  <!--External JS-->
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+
+  <!--Internal JS-->
+  <script type="text/javascript" src="/scripts/app.js"></script>
+  <script type="text/javascript" src="/scripts/initialMessage.js"></script>
+</body>
