@@ -44,22 +44,9 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/:listingID", (req, res) => {
-    db.query(queries.specificListing, [req.params.listingID])
-      .then(data => {
-        templateVars.item = data.rows[0];
-        res.render('listing', templateVars);
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
-
   router.get("/search", (req, res) => {
     // fetch all the search options
-    const { name, city, minPrice, maxPrice } = req.body;
+    const { name, city, minPrice, maxPrice } = req.query;
 
     // track modifications to the search query
     let modifications = false;
@@ -68,7 +55,9 @@ module.exports = (db) => {
     let queryParams = [];
 
     // base query
-    let queryString = queries.search;
+    let queryString = `SELECT *
+    FROM listings
+    LEFT OUTER JOIN favorites ON listings.id = favorites.listing_id\n`;
 
     // dynamic additions based on search parameters
     if (name) {
@@ -98,7 +87,7 @@ module.exports = (db) => {
     // finish off query
     const limits = 12;
     queryParams.push(limits);
-    queryString += `ORDER BY id LIMIT $${queryParams.length};`;
+    queryString += `ORDER BY listings.id LIMIT $${queryParams.length};`;
 
     // print out the final query that will be run, for debugging only
     printQuery(queryString, queryParams);
@@ -139,5 +128,19 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
+  router.get("/browse/:listingID", (req, res) => {
+    db.query(queries.specificListing, [req.params.listingID])
+      .then(data => {
+        templateVars.item = data.rows[0];
+        res.render('listing', templateVars);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
   return router;
 };
