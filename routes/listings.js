@@ -62,7 +62,7 @@ module.exports = (db) => {
     // dynamic additions based on search parameters
     if (name) {
       queryParams.push(`%${name}%`);
-      queryString += `${checkModifications(modifications)} name LIKE $${queryParams.length}\n`;
+      queryString += `${checkModifications(modifications)} name ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
 
@@ -80,7 +80,7 @@ module.exports = (db) => {
 
     if (city) {
       queryParams.push(`%${city}%`);
-      queryString += `${checkModifications(modifications)} city LIKE $${queryParams.length}\n`;
+      queryString += `${checkModifications(modifications)} city ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
 
