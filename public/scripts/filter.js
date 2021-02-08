@@ -8,9 +8,9 @@ $(() => {
     <input name="city" type="text" id="city">
     <label>Price Range:</label>
     <span>
-    <input name="minPrice" type="number" id="minPrice" placeholder="$">
+    <input name="minPrice" type="number" id="minPrice" step="any" min="0" placeholder="$">
     <label> to </label>
-    <input name="maxPrice" type="number" id="maxPrice" placeholder="$">
+    <input name="maxPrice" type="number" id="maxPrice" step="any" min="0" placeholder="$">
     </span>
     <button type="submit">Submit</button>
   </form>`);
