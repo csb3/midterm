@@ -2,8 +2,6 @@
 
 const queries = {
   // USERS QUERIES
-  createUser: ``, // SHOULD RETURN USER USING SQL 'RETURNING *'
-  makeAdmin: ``,
   fetchUser: `SELECT * FROM users
   WHERE id = $1;`,
 
@@ -22,23 +20,23 @@ const queries = {
   // LISTINGS QUERIES
   createListing: `INSERT INTO listings (name, description, price, photo_url, creation_date, user_id, weight, city) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`, // SHOULD RETURN THE NEW LISTING USING SQL 'RETURNING *'
   browseRecentListings: `SELECT * FROM listings
+  WHERE deleted = false
   ORDER BY creation_date DESC
   LIMIT 12;`,
   specificListing: `SELECT * FROM listings
-  WHERE id = $1;`,
+  WHERE id = $1 AND deleted = false;`,
   browseMyListings: `SELECT *
   FROM listings
   WHERE user_id = $1 AND deleted = false;`,
-  search: ``,
   showFavorites: `SELECT *
   FROM listings
   JOIN favorites on listings.id = favorites.listing_id
-  WHERE favorites.user_id = $1;`,
+  WHERE favorites.user_id = $1 AND deleted = false;`,
   addToFavorites: `INSERT INTO favorites (listing_id, user_id) VALUES ($1, $2) RETURNING *;`,
   removeFavorite: `DELETE FROM favorites WHERE id = $1;`,
   showFeatured: `SELECT *
   FROM listings
-  WHERE featured = true
+  WHERE featured = true AND deleted = false
   ORDER BY creation_date DESC
   LIMIT 2;`
 };
