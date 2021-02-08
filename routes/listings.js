@@ -67,13 +67,13 @@ module.exports = (db) => {
     }
 
     if (maxPrice) {
-      queryParams.push(maxPrice);
+      queryParams.push(Number(maxPrice));
       queryString += `${checkModifications(modifications)} price <= $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (minPrice) {
-      queryParams.push(minPrice);
+      queryParams.push(Number(minPrice));
       queryString += `${checkModifications(modifications)} price >= $${queryParams.length}\n`;
       modifications = true;
     }
@@ -92,9 +92,10 @@ module.exports = (db) => {
     // print out the final query that will be run, for debugging only
     printQuery(queryString, queryParams);
 
-    db.query(queries.search, queryParams)
+    db.query(queryString, queryParams)
       .then(data => {
         templateVars.recentListings = data.rows;
+        console.log('-----------', data.rows);
         templateVars.showFeatured = false;
         res.render('index', templateVars);
       })
@@ -144,3 +145,11 @@ module.exports = (db) => {
 
   return router;
 };
+
+
+// SELECT *
+// FROM listings
+// LEFT OUTER JOIN favorites ON listings.id = favorites.listing_id
+// WHERE price <= 2000
+// AND price >= 1000
+// ORDER BY listings.id LIMIT 12;
