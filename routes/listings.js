@@ -1,6 +1,7 @@
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
+const { templateVars } = require('../testingData');
 
 module.exports = (db) => {
 
@@ -17,9 +18,10 @@ module.exports = (db) => {
   });
 
   router.get("/:listingID", (req, res) => {
-    db.query(queries.specificListing)
+    db.query(queries.specificListing, [req.params.listingID])
       .then(data => {
-        // show specific listing
+        templateVars.item = data.rows[0];
+        res.render('listing', templateVars);
       })
       .catch(err => {
         res
