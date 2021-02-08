@@ -10,7 +10,7 @@ const checkModifications = function(modified) {
   } else {
     return 'WHERE';
   }
-}
+};
 
 // for debugging only, prints out the parameterized query with all parameters filled in
 const printQuery = function(queryString, queryParams) {
@@ -72,8 +72,8 @@ module.exports = (db) => {
 
     // dynamic additions based on search parameters
     if (name) {
-      queryParams.push(name);
-      queryString += `${checkModifications(modifications)} name = $${queryParams.length}\n`;
+      queryParams.push(`%${name}%`);
+      queryString += `${checkModifications(modifications)} name LIKE $${queryParams.length}\n`;
       modifications = true;
     }
 
@@ -98,7 +98,7 @@ module.exports = (db) => {
     // finish off query
     const limits = 12;
     queryParams.push(limits);
-    queryString += `ORDER BY id LIMIT $${queryParams.length};`
+    queryString += `ORDER BY id LIMIT $${queryParams.length};`;
 
     // print out the final query that will be run, for debugging only
     printQuery(queryString, queryParams);
@@ -107,7 +107,7 @@ module.exports = (db) => {
       .then(data => {
         templateVars.recentListings = data.rows;
         templateVars.showFeatured = false;
-        res.render('index', templateVars)
+        res.render('index', templateVars);
       })
       .catch(err => {
         res
