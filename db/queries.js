@@ -28,7 +28,7 @@ const queries = {
   WHERE id = $1;`,
   browseMyListings: `SELECT *
   FROM listings
-  WHERE user_id = 1 AND deleted = false;`,
+  WHERE user_id = $1 AND deleted = false;`,
   search: ``,
   showFavorites: `SELECT *
   FROM listings

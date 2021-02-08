@@ -2,10 +2,16 @@ $(() => {
 
   const $searchForm = $(`
   <form method="GET" action="/api/listings/search">
-    <input name="name" type="text" id="name">
-    <input name="city" type="text" id="city">
-    <input name="minPrice" type="number" id="minPrice">
-    <input name="maxPrice" type="number" id="maxPrice">
+    <label for="name">Name:</label>
+    <input type="text" id="name">
+    <label for="city">City:</label>
+    <input type="text" id="city">
+    <label>Price Range:</label>
+    <span>
+    <input type="number" id="minPrice" placeholder="$">
+    <label> to </label>
+    <input type="number" id="maxPrice" placeholder="$">
+    </span>
     <button type="submit">Submit</button>
   </form>`);
 
