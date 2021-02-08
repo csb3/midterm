@@ -1,24 +1,24 @@
 $(() => {
 
   const $searchForm = $(`
-  <form>
+  <form method="GET" action="/api/listings/search">
     <label for="name">Name:</label>
     <input type="text" id="name">
     <label for="city">City:</label>
     <input type="text" id="city">
-    <label for="date_posted">Posted after:</label>
-    <input type="date" id="date_posted">
+    <span>
+    <label>Price Range:</label>
+    <input type="number" id="minPrice">
+    <label> to </label>
+    <input type="number" id="maxPrice">
+    </span>
     <button type="submit">Submit</button>
   </form>`);
 
-  const filterButton = $('.listingsLabel button')
+  const filterButton = $('.initialFilter')
   filterButton.click(event => {
     const $container = $('.filter-options');
-    const $form = $('.filter-options form');
-    if ($form.is(':visible')) {
-      $container.slideUp(() => {$container.empty();})
-    } else {
-      $container.append($searchForm).hide().slideDown();
-    }
+    $container.append($searchForm).hide().slideDown();
+    filterButton.detach();
   });
 });
