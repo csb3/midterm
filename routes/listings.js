@@ -46,7 +46,7 @@ module.exports = (db) => {
 
   router.get("/search", (req, res) => {
     // fetch all the search options
-    const { name, city, minPrice, maxPrice } = req.query;
+    const { name, city, minPrice, maxPrice } = req.body;
 
     // track modifications to the search query
     let modifications = false;
@@ -57,7 +57,9 @@ module.exports = (db) => {
     // base query
     let queryString = `SELECT listings.*, favorites.user_id AS favorited
     FROM listings
-    LEFT OUTER JOIN favorites ON listings.id = favorites.listing_id\n`;
+    LEFT OUTER JOIN favorites ON favorites.listing_id = listing.id
+    WHERE sold_date is NULL
+    AND deleted = false`;
 
     // dynamic additions based on search parameters
     if (name) {
@@ -87,7 +89,7 @@ module.exports = (db) => {
     // finish off query
     const limits = 12;
     queryParams.push(limits);
-    queryString += `ORDER BY listings.id LIMIT $${queryParams.length};`;
+    queryString += `ORDER BY creation_date DESC LIMIT $${queryParams.length};`;
 
     // print out the final query that will be run, for debugging only
     printQuery(queryString, queryParams);
