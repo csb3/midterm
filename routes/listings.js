@@ -46,7 +46,6 @@ module.exports = (db) => {
 
   router.get("/search", (req, res) => {
     // fetch all the search options
-    console.log(req.query);
     const { name, city, minPrice, maxPrice } = req.query;
 
     // track modifications to the search query
@@ -88,7 +87,7 @@ module.exports = (db) => {
     // finish off query
     const limits = 12;
     queryParams.push(limits);
-    queryString += `ORDER BY id LIMIT $${queryParams.length};`;
+    queryString += `ORDER BY listings.id LIMIT $${queryParams.length};`;
 
     // print out the final query that will be run, for debugging only
     printQuery(queryString, queryParams);
