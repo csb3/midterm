@@ -67,13 +67,63 @@ main {
     }
   }
 
+  .message {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    margin-top: 5%;
+    width: 100%;
+
+    button {
+      background-color: $featuresColor;
+      color: $baseColor;
+      font-weight: bold;
+      font-size: 2em;
+      padding: 0.5em;
+      border: none;
+      border-radius: 10px;
+      letter-spacing: 0.15em;
+    }
+
+    button:hover {
+      background-color: #062421;
+    }
+
+    form {
+      display:flex;
+      flex-direction: column;
+      display: none;
+
+      label {
+        margin-top: 10px;
+        font-size: 1.2em;
+        margin-bottom: 5px;
+      }
+
+      textarea {
+        border: none;
+      }
+
+      textarea:focus {
+        outline: none;
+      }
+
+      button {
+        margin-top: 5px;
+        font-size: 1.5em;
+        width: 30%;
+      }
+    }
+
+  }
+
 }
 
 .itemInfo {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  position: relative;
+  align-items: center;
 
   p {
     width: 60%;
@@ -82,6 +132,10 @@ main {
     border-radius: 5px;
     font-family: $headersText;
     font-size: 1.8em;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px dashed $tertiaryColor;
+    margin: 3px;
   }
 
   p:first-child {
@@ -92,19 +146,19 @@ main {
     padding: 0;
     color: $primaryColor;
     margin-top: -50px;
-    margin-bottom: 0;
+    margin-bottom: 20px;
     font-weight: bold;
     background-color: $baseColor;
     border-radius: 50%;
+    border-bottom: none;
   }
 
   span {
     color: $secondaryColor;
-    margin-left: 10%;
-    position: absolute;
-    left: 12%;
     font-weight: bold;
   }
+
+
 }
 
 

@@ -47,8 +47,14 @@
           <p>Weight: <span><%= item.weight %></span></p>
           <p>Posted: <span><%= item.creation_date %></span></p>
       </span>
-          <div>
-            <button>SEND A MESSAGE TO THE SELLER</button>
+          <div class="message">
+            <button>CONTACT THE SELLER</button>
+            <form>
+            <label for="buyerMessage">Enter your message here:</label>
+            <textarea name="message" id="buyerMessage" cols="30" rows="10"></textarea>
+            <button type="submit">SEND</button>
+
+            </form>
           </div>
         </div>
 
