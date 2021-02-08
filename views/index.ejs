@@ -41,7 +41,8 @@
               <span class="location"><%= bread.city %></span>
               <p>ONLY $<%=bread.price / 100 %>!!</p>
               <p class='featureDescription'><%= bread.description.substring(0, 110) %></p>
-              <a href="/api/listings/<% bread.id %>"><button> BUY NOW! </button></a>
+              <% let route = "/api/listings/" + bread.id; %>
+              <a href="<%- route %>"><button> BUY NOW! </button></a>
             </div>
           </div>
           <% i++; %>
@@ -60,7 +61,8 @@
 
 
     <section class='listings'>
-    <% for (const bread of recentListings) { %>
+    <% for (let i = recentListings.length - 1; i > 0; i--) { %>
+      <% let bread = recentListings[i] %>
       <div class ='listingItem'>
         <img src="<%- bread.photo_url %>" alt="A loaf of bread">
         <div class='details'>
@@ -72,7 +74,8 @@
             . . .
           <% } %>
           </p>
-          <a href="/api/listings/<% bread.id %>"><button> MORE INFO </button></a>
+          <% let route = "/api/listings/" + bread.id; %>
+          <a href="<%- route %>"><button> MORE INFO </button></a>
         </div>
       </div>
     <% } %>
