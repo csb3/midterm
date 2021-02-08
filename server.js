@@ -1,8 +1,11 @@
 //loading fake data into templates for testing, please don't remove yet -IK
 const { templateVars } = require('./testingData.js');
 
-// load prewritten queries
+// load prewritten queries -DT
 const queries = require('./db/queries');
+
+// for debugging (shows parameterized queries) -DT
+const printQuery = require('./lib/printQuery');
 
 // load .env data into process.env
 require('dotenv').config();
@@ -64,19 +67,18 @@ app.use("/api/messages", messagesRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
-  db.query('SELECT id FROM listings LIMIT 1;')
+  db.query(queries.browseRecentListings)
     .then(
-      // results from the first query
+      // results for recent listings
       (recent) => {
         templateVars.recentListings = recent.rows;
-        return db.query('SELECT id FROM listings LIMIT 1 OFFSET 1;')
+        return db.query(queries.showFeatured);
       }
     )
     .then(
-      // results from the second query
+      // results for featured listings
       (featured) => {
         templateVars.featuredListings = featured.rows;
-        console.log(templateVars.recentListings, templateVars.featuredListings);
         res.render("index", templateVars);
       }
     )
