@@ -63,8 +63,7 @@
 
 
     <section class='listings'>
-    <% for (let i = recentListings.length - 1; i > 0; i--) { %>
-      <% let bread = recentListings[i] %>
+    <% for (const bread of recentListings) { %>
       <div class ='listingItem'>
         <img src="<%- bread.photo_url %>" alt="A loaf of bread">
         <div class='details'>
