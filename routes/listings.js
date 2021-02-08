@@ -58,7 +58,7 @@ module.exports = (db) => {
     let queryString = `
     SELECT *
     FROM listings
-    LEFT OUTER JOIN favorites ON favorites.listing_id = listing.id
+    LEFT OUTER JOIN favorites ON favorites.listing_id = listings.id
     WHERE sold_date is NULL
     AND deleted = false`;
 
@@ -90,7 +90,7 @@ module.exports = (db) => {
     // finish off query
     const limits = 12;
     queryParams.push(limits);
-    queryString += `ORDER BY creation_date DESC LIMIT $${queryParams.length};`;
+    queryString += ` ORDER BY creation_date DESC LIMIT $${queryParams.length};`;
 
     // print out the final query that will be run, for debugging only
     printQuery(queryString, queryParams);
