@@ -1,9 +1,6 @@
-//loading fake data into templates for testing, please don't remove yet -IK
-const { templateVars } = require('./testingData.js');
-const singleItem = {
-  item: templateVars.listings[0],
-  user: templateVars.user
-};
+
+const templateVars = {};
+templateVars.user = {userID: 1};
 
 // load prewritten queries -DT
 const queries = require('./db/queries');

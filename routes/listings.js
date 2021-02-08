@@ -78,25 +78,25 @@ module.exports = (db) => {
     // dynamic additions based on search parameters
     if (name) {
       queryParams.push(`%${name}%`);
-      queryString += `${checkModifications(modifications)} name LIKE $${queryParams.length}\n`;
+      queryString += `${checkModifications(modifications)} name ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (maxPrice) {
-      queryParams.push(Number(maxPrice));
+      queryParams.push(Math.floor(Number(maxPrice) * 100));
       queryString += `${checkModifications(modifications)} price <= $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (minPrice) {
-      queryParams.push(Number(minPrice));
+      queryParams.push(Math.floor(Number(minPrice) * 100));
       queryString += `${checkModifications(modifications)} price >= $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (city) {
       queryParams.push(`%${city}%`);
-      queryString += `${checkModifications(modifications)} city LIKE $${queryParams.length}\n`;
+      queryString += `${checkModifications(modifications)} city ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
 
