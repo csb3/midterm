@@ -42,7 +42,7 @@
                 <span class="location"><%= bread.city %></span>
                 <p>ONLY $<%=bread.price / 100 %>!!</p>
                 <p class='featureDescription'><%= bread.description.substring(0, 110) %></p>
-                <% let route = "/api/listings/" + bread.id; %>
+                <% let route = "/api/listings/browse/" + bread.id; %>
                 <a href="<%- route %>"><button> BUY NOW! </button></a>
               </div>
             </div>
@@ -76,7 +76,7 @@
             . . .
           <% } %>
           </p>
-          <% let route = "/api/listings/" + bread.id; %>
+          <% let route = "/api/listings/browse/" + bread.id; %>
           <a href="<%- route %>"><button> MORE INFO </button></a>
         </div>
       </div>
