@@ -1,5 +1,9 @@
 //loading fake data into templates for testing, please don't remove yet -IK
 const { templateVars } = require('./testingData.js');
+const singleItem = {
+  item: templateVars.listings[0],
+  user: templateVars.user
+};
 
 // load .env data into process.env
 require('dotenv').config();
@@ -63,6 +67,11 @@ app.use("/api/messages", messagesRoutes(db));
 app.get("/", (req, res) => {
   res.render("index", templateVars);
 });
+
+//Testing route - not for actual use. We'll hook this up properly later
+app.get('/individual', (req, res) => {
+  res.render("listing", singleItem);
+})
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
