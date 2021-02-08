@@ -82,6 +82,7 @@ app.get("/", (req, res) => {
     .then(
       // results for featured listings
       (featured) => {
+        templateVars.showFeatured = true;
         templateVars.featuredListings = featured.rows;
         res.render("index", templateVars);
       }
