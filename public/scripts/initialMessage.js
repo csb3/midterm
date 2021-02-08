@@ -13,7 +13,7 @@ $(() => {
   $sendButton.click(function (event) {
     event.preventDefault();
     const message = $(this).siblings('#buyerMessage').val();
-    $.post('/', message)
+    $.post('/api/messages/create', message)
       .done(res => {
         $messageForm.detach();
         $toggleButton.append('<h2>Message submitted successfully. The seller will be in contact shortly! </h2>');
