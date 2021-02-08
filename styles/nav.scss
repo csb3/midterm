@@ -12,6 +12,10 @@ nav {
   top: 0px;
   z-index: 2;
 
+  a {
+    text-decoration: none;
+  }
+
   span {
     font-family: $logoText;
     font-size: 3em;
