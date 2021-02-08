@@ -61,26 +61,26 @@ module.exports = (db) => {
 
     // dynamic additions based on search parameters
     if (name) {
-      queryParams.push(`%${name}%`);
-      queryString += `${checkModifications(modifications)} name LIKE $${queryParams.length}\n`;
+      queryParams.push(`%${name.toLowerCase()}%`);
+      queryString += `${checkModifications(modifications)} name ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (maxPrice) {
-      queryParams.push(Number(maxPrice));
+      queryParams.push(Number(maxPrice * 100));
       queryString += `${checkModifications(modifications)} price <= $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (minPrice) {
-      queryParams.push(Number(minPrice));
+      queryParams.push(Number(minPrice * 100));
       queryString += `${checkModifications(modifications)} price >= $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (city) {
-      queryParams.push(`%${city}%`);
-      queryString += `${checkModifications(modifications)} city LIKE $${queryParams.length}\n`;
+      queryParams.push(`%${city.toLowerCase()}%`);
+      queryString += `${checkModifications(modifications)} city ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
 
@@ -95,7 +95,6 @@ module.exports = (db) => {
     db.query(queryString, queryParams)
       .then(data => {
         templateVars.recentListings = data.rows;
-        console.log('-----------', data.rows);
         templateVars.showFeatured = false;
         res.render('index', templateVars);
       })
