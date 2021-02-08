@@ -38,7 +38,12 @@ const queries = {
   FROM listings
   WHERE featured = true AND deleted = false
   ORDER BY creation_date DESC
-  LIMIT 2;`
+  LIMIT 2;`,
+  postedBy: `SELECT users.user_name
+  FROM users
+  JOIN listings ON listings.user_id = users.id
+  WHERE listings.user_id = $1
+  GROUP BY users.user_name;`
 };
 
 module.exports = queries;
