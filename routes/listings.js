@@ -55,47 +55,31 @@ module.exports = (db) => {
     let queryParams = [];
 
     // base query
-    let queryString = `SELECT *
+    let queryString = `SELECT listings.*, favorites.user_id AS favorited
     FROM listings
     LEFT OUTER JOIN favorites ON listings.id = favorites.listing_id\n`;
 
     // dynamic additions based on search parameters
     if (name) {
-<<<<<<< HEAD
       queryParams.push(`%${name.toLowerCase()}%`);
-=======
-      queryParams.push(`%${name}%`);
->>>>>>> master
       queryString += `${checkModifications(modifications)} name ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (maxPrice) {
-<<<<<<< HEAD
-      queryParams.push(Number(maxPrice * 100));
-=======
       queryParams.push(Math.floor(Number(maxPrice) * 100));
->>>>>>> master
       queryString += `${checkModifications(modifications)} price <= $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (minPrice) {
-<<<<<<< HEAD
-      queryParams.push(Number(minPrice * 100));
-=======
       queryParams.push(Math.floor(Number(minPrice) * 100));
->>>>>>> master
       queryString += `${checkModifications(modifications)} price >= $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (city) {
-<<<<<<< HEAD
       queryParams.push(`%${city.toLowerCase()}%`);
-=======
-      queryParams.push(`%${city}%`);
->>>>>>> master
       queryString += `${checkModifications(modifications)} city ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
@@ -110,6 +94,7 @@ module.exports = (db) => {
 
     db.query(queryString, queryParams)
       .then(data => {
+        console.log(data.rows);
         templateVars.recentListings = data.rows;
         templateVars.showFeatured = false;
         res.render('index', templateVars);
@@ -160,11 +145,3 @@ module.exports = (db) => {
 
   return router;
 };
-
-
-// SELECT *
-// FROM listings
-// LEFT OUTER JOIN favorites ON listings.id = favorites.listing_id
-// WHERE price <= 2000
-// AND price >= 1000
-// ORDER BY listings.id LIMIT 12;
