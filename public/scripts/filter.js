@@ -8,6 +8,7 @@ $(() => {
     <input type="text" id="city">
     <label for="date_posted">Posted after:</label>
     <input type="date" id="date_posted">
+    <button type="submit">Submit</button>
   </form>`);
 
   const filterButton = $('.listingsLabel button')
