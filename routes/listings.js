@@ -67,13 +67,13 @@ module.exports = (db) => {
     }
 
     if (maxPrice) {
-      queryParams.push(Number(maxPrice));
+      queryParams.push(Math.floor(Number(maxPrice) * 100));
       queryString += `${checkModifications(modifications)} price <= $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (minPrice) {
-      queryParams.push(Number(minPrice));
+      queryParams.push(Math.floor(Number(minPrice) * 100));
       queryString += `${checkModifications(modifications)} price >= $${queryParams.length}\n`;
       modifications = true;
     }
