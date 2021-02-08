@@ -1,0 +1,124 @@
+@import 'globals';
+
+
+.titleBanner {
+  margin-top: 110px;
+  margin-left: 8%;
+  font-family: $headersText;
+  font-size: 2.2em;
+  width: 50%;
+
+  h1 {
+    border-bottom: 8px solid $primaryColor;
+    color: $quadColor;
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  align-self: center;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  div {
+    width: 100%;
+    flex-shrink: 2;
+  }
+
+  .details {
+    flex-shrink: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .chalk {
+      background-color: #000000;
+      background-image: url("https://www.transparenttextures.com/patterns/black-paper.png");
+      height: 5em;
+      margin-top: 0;
+      margin-bottom: 0.5em;
+      padding: 0.5em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: $headersText;
+      color: $baseColor;
+      font-size: 2.5em;
+      font-style: italic;
+      border-radius: 10px;
+    }
+
+    .userTag {
+      background-color: $featuresColor;
+      position: absolute;
+      top: -35px;
+      left: 0px;
+      padding: 0.4em;
+      color: $baseColor;
+      border-radius: 10px;
+      font-size: 1.2rem;
+    }
+  }
+
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+
+  p {
+    width: 60%;
+    display: flex;
+    padding: 0.4em;
+    border-radius: 5px;
+    font-family: $headersText;
+    font-size: 1.8em;
+  }
+
+  p:first-child {
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    font-size: 4em;
+    padding: 0;
+    color: $primaryColor;
+    margin-top: -50px;
+    margin-bottom: 0;
+    font-weight: bold;
+    background-color: $baseColor;
+    border-radius: 50%;
+  }
+
+  span {
+    color: $secondaryColor;
+    margin-left: 10%;
+    position: absolute;
+    left: 12%;
+    font-weight: bold;
+  }
+}
+
+
+
+
+@media only screen and (min-width: 700px) {
+
+  main {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+
+    div {
+      width: 45%;
+    }
+  }
+}
