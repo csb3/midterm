@@ -6,11 +6,11 @@ $(() => {
     <input type="text" id="name">
     <label for="city">City:</label>
     <input type="text" id="city">
-    <span>
     <label>Price Range:</label>
-    <input type="number" id="minPrice">
+    <span>
+    <input type="number" id="minPrice" placeholder="$">
     <label> to </label>
-    <input type="number" id="maxPrice">
+    <input type="number" id="maxPrice" placeholder="$">
     </span>
     <button type="submit">Submit</button>
   </form>`);
