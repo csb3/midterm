@@ -3,14 +3,14 @@ $(() => {
   const $searchForm = $(`
   <form method="GET" action="/api/listings/search">
     <label for="name">Name:</label>
-    <input type="text" id="name">
+    <input name="name" type="text" id="name">
     <label for="city">City:</label>
-    <input type="text" id="city">
-    <span>
+    <input name="city" type="text" id="city">
     <label>Price Range:</label>
-    <input type="number" id="minPrice">
+    <span>
+    <input name="minPrice" type="number" id="minPrice" placeholder="$">
     <label> to </label>
-    <input type="number" id="maxPrice">
+    <input name="maxPrice" type="number" id="maxPrice" placeholder="$">
     </span>
     <button type="submit">Submit</button>
   </form>`);

@@ -44,22 +44,9 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/:listingID", (req, res) => {
-    db.query(queries.specificListing, [req.params.listingID])
-      .then(data => {
-        templateVars.item = data.rows[0];
-        res.render('listing', templateVars);
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
-
   router.get("/search", (req, res) => {
     // fetch all the search options
-    const { name, city, minPrice, maxPrice } = req.body;
+    const { name, city, minPrice, maxPrice } = req.query;
 
     // track modifications to the search query
     let modifications = false;
@@ -144,5 +131,19 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
+  router.get("/browse/:listingID", (req, res) => {
+    db.query(queries.specificListing, [req.params.listingID])
+      .then(data => {
+        templateVars.item = data.rows[0];
+        res.render('listing', templateVars);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
   return router;
 };
