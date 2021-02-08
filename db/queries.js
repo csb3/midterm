@@ -9,6 +9,7 @@ const queries = {
 
   // MESSAGES QUERIES
   createMessage: ``, // SHOULD RETURN THE MESSAGE USING SQL 'RETURNING *'
+  createConversation: ``, // creates a ew message
   listMessages: `SELECT *
   FROM messages
   JOIN conversations ON conversation_id = conversations.id
