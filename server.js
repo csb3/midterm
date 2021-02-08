@@ -64,10 +64,19 @@ app.use("/api/messages", messagesRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
-  db.query('SELECT * FROM listings LIMIT 1;')
+  db.query('SELECT id FROM listings LIMIT 1;')
     .then(
-      (data) => {
-        templateVars.listings = data.rows;
+      // results from the first query
+      (recent) => {
+        templateVars.recentListings = recent.rows;
+        return db.query('SELECT id FROM listings LIMIT 1 OFFSET 1;')
+      }
+    )
+    .then(
+      // results from the second query
+      (featured) => {
+        templateVars.featuredListings = featured.rows;
+        console.log(templateVars.recentListings, templateVars.featuredListings);
         res.render("index", templateVars);
       }
     )
