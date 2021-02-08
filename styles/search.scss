@@ -18,7 +18,7 @@
     border-bottom: 5px solid $secondaryColor;
   }
 
-  button {
+ .initialFilter {
     position: absolute;
     bottom: -5px;
     left: 10%;
@@ -35,6 +35,21 @@
 
   button:focus {
     outline: none;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+    width: 45%;
+
+    span {
+     display: flex;
+    }
+
+    input {
+      margin-bottom: 20px;
+    }
   }
 
 

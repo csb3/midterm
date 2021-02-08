@@ -26,11 +26,12 @@
   <!-- Nav Bar (fixed) -->
   <%- include ('partials/_nav') %>
 
+
   <main>
   <!-- Rotating featured breads -->
     <section class='featuredItems'>
       <% let i = 0; %>
-      <% for (const bread of listings) { %>
+      <% for (const bread of featuredListings) { %>
         <% if (bread.featured && i < 2 ) { %>
           <div class='feature'>
             <h4 class='featureTag'>FEATURED</h4>
@@ -39,10 +40,12 @@
               <h1><%= bread.name %></h1>
               <span class="location"><%= bread.city %></span>
               <p>ONLY $<%=bread.price / 100 %>!!</p>
-              <p class='featureDescription'><%= bread.description.substring(0, 200) %></p>
-              <button> BUY NOW! </button>
+              <p class='featureDescription'><%= bread.description.substring(0, 110) %></p>
+              <% let route = "/api/listings/" + bread.id; %>
+              <a href="<%- route %>"><button> BUY NOW! </button></a>
             </div>
           </div>
+          <% i++; %>
           <% } %>
         <% } %>
 
@@ -51,14 +54,15 @@
 
     <div class='listingsLabel'>
       <h2>THE LATEST BREADS</h2>
-      <button>FILTER</button>
+      <button class="initialFilter">FILTER</button>
       <div class='filter-options'>
       </div>
     </div>
 
 
     <section class='listings'>
-    <% for (const bread of listings) { %>
+    <% for (let i = recentListings.length - 1; i > 0; i--) { %>
+      <% let bread = recentListings[i] %>
       <div class ='listingItem'>
         <img src="<%- bread.photo_url %>" alt="A loaf of bread">
         <div class='details'>
@@ -70,7 +74,8 @@
             . . .
           <% } %>
           </p>
-          <button> MORE INFO </button>
+          <% let route = "/api/listings/" + bread.id; %>
+          <a href="<%- route %>"><button> MORE INFO </button></a>
         </div>
       </div>
     <% } %>
