@@ -26,11 +26,12 @@
   <!-- Nav Bar (fixed) -->
   <%- include ('partials/_nav') %>
 
+
   <main>
   <!-- Rotating featured breads -->
     <section class='featuredItems'>
       <% let i = 0; %>
-      <% for (const bread of listings) { %>
+      <% for (const bread of featuredListings) { %>
         <% if (bread.featured && i < 2 ) { %>
           <div class='feature'>
             <h4 class='featureTag'>FEATURED</h4>
@@ -39,10 +40,11 @@
               <h1><%= bread.name %></h1>
               <span class="location"><%= bread.city %></span>
               <p>ONLY $<%=bread.price / 100 %>!!</p>
-              <p class='featureDescription'><%= bread.description.substring(0, 200) %></p>
-              <button> BUY NOW! </button>
+              <p class='featureDescription'><%= bread.description.substring(0, 110) %></p>
+              <a href="/api/listings/<% bread.id %>"><button> BUY NOW! </button></a>
             </div>
           </div>
+          <% i++; %>
           <% } %>
         <% } %>
 
@@ -58,7 +60,7 @@
 
 
     <section class='listings'>
-    <% for (const bread of listings) { %>
+    <% for (const bread of recentListings) { %>
       <div class ='listingItem'>
         <img src="<%- bread.photo_url %>" alt="A loaf of bread">
         <div class='details'>
@@ -70,7 +72,7 @@
             . . .
           <% } %>
           </p>
-          <button> MORE INFO </button>
+          <a href="/api/listings/<% bread.id %>"><button> MORE INFO </button></a>
         </div>
       </div>
     <% } %>
