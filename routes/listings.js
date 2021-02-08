@@ -55,8 +55,7 @@ module.exports = (db) => {
     let queryParams = [];
 
     // base query
-    let queryString = `
-    SELECT *
+    let queryString = `SELECT listings.*, favorites.user_id AS favorited
     FROM listings
     LEFT OUTER JOIN favorites ON favorites.listing_id = listing.id
     WHERE sold_date is NULL
@@ -64,7 +63,7 @@ module.exports = (db) => {
 
     // dynamic additions based on search parameters
     if (name) {
-      queryParams.push(`%${name}%`);
+      queryParams.push(`%${name.toLowerCase()}%`);
       queryString += `${checkModifications(modifications)} name ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
@@ -82,7 +81,7 @@ module.exports = (db) => {
     }
 
     if (city) {
-      queryParams.push(`%${city}%`);
+      queryParams.push(`%${city.toLowerCase()}%`);
       queryString += `${checkModifications(modifications)} city ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
@@ -97,8 +96,8 @@ module.exports = (db) => {
 
     db.query(queryString, queryParams)
       .then(data => {
+        console.log(data.rows);
         templateVars.recentListings = data.rows;
-        console.log('-----------', data.rows);
         templateVars.showFeatured = false;
         res.render('index', templateVars);
       })
@@ -148,11 +147,3 @@ module.exports = (db) => {
 
   return router;
 };
-
-
-// SELECT *
-// FROM listings
-// LEFT OUTER JOIN favorites ON listings.id = favorites.listing_id
-// WHERE price <= 2000
-// AND price >= 1000
-// ORDER BY listings.id LIMIT 12;
