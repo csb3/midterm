@@ -8,11 +8,11 @@ const queries = {
   // MESSAGES QUERIES
   createConversation: `INSERT INTO conversations (listing_id, buyer_id, seller_id) VALUES ($1, $2, $3) RETURNING *;`,
   createMessage: `INSERT INTO messages (conversation_id, sender_id, recipient_id, content, timestamp) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP) RETURNING *;`, // SHOULD RETURN THE MESSAGE USING SQL 'RETURNING *'
-  listMessages: `SELECT messages.*, conversations.*, x.user_name AS seller_user_name, y.user_name AS buyer_user_name
+  listMessages: `SELECT messages.*, conversations.*, x.user_name AS recipient_name, y.user_name AS sender_name
   FROM messages
   JOIN conversations ON conversation_id = conversations.id
-  JOIN users x ON x.id = seller_id
-  JOIN users y ON y.id = buyer_id
+  JOIN users x ON x.id = recipient_id
+  JOIN users y ON y.id = sender_id
   WHERE conversations.id = $1
   ORDER BY timestamp;`,
   listConversations: `
