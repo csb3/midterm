@@ -76,7 +76,17 @@ const generateConversations = (elements) => {
     </div>`;
 
     $('nav').on('click', '#' + instance.id, function (event) {
-      fillWindow($chatWindow, messages, generateAllMessages );
+
+      $.get('/api/messages/conversation', instance.id)
+        .done(mess => {
+          fillWindow($chatWindow, mess, generateAllMessages );
+        })
+        .fail(err => {
+          $chatWindow.empty();
+          console.error(err);
+          $chatWindow.append(`<h2>Could not load messages, please try again later`);
+        })
+
     });
   }
 
@@ -113,7 +123,15 @@ const generateAllMessages = (elements) => {
   }
 
   $('nav').on('click', '.back', function (event) {
-    fillWindow($chatWindow, convos, generateConversations );
+    $.get('/api/messages/conversations')
+      .done((conversations) => {
+        fillWindow($chatWindow, conversations, generateConversations);
+        $('nav').append($chatWindow.hide());
+      })
+      .fail(err => {
+        console.error(err);
+        $('nav').append($chatWindow.append(`<h2>Failed to get conversations, please try again later</h2>`).hide());
+      })
   });
 
   $allMessages += generateControls();
