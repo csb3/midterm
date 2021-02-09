@@ -11,6 +11,21 @@
   h1 {
     border-bottom: 8px solid $primaryColor;
     color: $quadColor;
+    margin-bottom: 5px;
+  }
+
+  button {
+    background-color: $primaryColor;
+    padding: 0.3em;
+    font-size: 0.8em;
+    border: none;
+    color: $baseColor;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  button:hover {
+    box-shadow: 5px 5px $tertiaryColor;
   }
 }
 
