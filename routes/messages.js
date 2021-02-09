@@ -20,6 +20,10 @@ const reconstructConvoObjs = function(objArray, currentUserID) {
   return newArr;
 };
 
+const reconstructMessageObjs = function(messageArray, currentUserID) {
+
+};
+
 module.exports = (db) => {
 
   router.post("/create", (req, res) => {
@@ -73,7 +77,9 @@ module.exports = (db) => {
   });
 
   router.post("/conversation", (req, res) => {
-    db.query(queries.listMessages)
+    const conversationID = req.body.convID;
+    printQuery(queries.listMessages, [conversationID]);
+    db.query(queries.listMessages, [conversationID])
       .then((data) => {
         console.log(data.rows);
         // res.setHeader('Content-Type', 'application/json');

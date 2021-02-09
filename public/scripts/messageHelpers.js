@@ -77,7 +77,7 @@ const generateConversations = (elements) => {
 
     $('nav').on('click', '#' + instance.id, function (event) {
 
-      $.get('/api/messages/conversation', instance.id)
+      $.get('/api/messages/conversation', {convID: instance.id})
         .done(mess => {
           fillWindow($chatWindow, mess, generateAllMessages );
         })
