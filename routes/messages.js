@@ -51,10 +51,11 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/conversation", (req, res) => {
+  router.post("/conversation", (req, res) => {
     db.query(queries.listMessages)
       .then(data => {
-        // list all messages in a conversation
+        res.setHeader('Content-Type', 'application/json');
+        // res.end(JSON.stringify({ message: sentMessage }));
       })
       .catch(err => {
         res
@@ -63,10 +64,11 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/conversations", (req, res) => {
+  router.post("/conversations", (req, res) => {
     db.query(queries.listConversations)
       .then(data => {
-        // list all conversations (no individual messages)
+        res.setHeader('Content-Type', 'application/json');
+        // res.end(JSON.stringify({ message: sentMessage }));
       })
       .catch(err => {
         res
