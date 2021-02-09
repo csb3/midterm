@@ -2,6 +2,23 @@ const { render } = require('ejs');
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
+const printQuery = require('../lib/printQuery');
+
+const reconstructConvoObjs = function(objArray, currentUserID) {
+  let newArr = [];
+  for (let obj of objArray) {
+    let newObj = {};
+    if (obj.buyer_id = currentUserID) {
+      newObj.username = obj.seller_user_name;
+    } else {
+      newObj.username = obj.buyer_user_name;
+    }
+    newObj.item_pic = obj.photo_url;
+    newObj.item_name = obj.name;
+    newArr.push(newObj);
+  }
+  return newArr;
+};
 
 module.exports = (db) => {
 
@@ -66,12 +83,16 @@ module.exports = (db) => {
 
   router.post("/conversations", (req, res) => {
     const currentUserID = req.session.userID;
-    console.log(currentUserID);
-    db.query(queries.listConversations, [currentUserID])
+
+    printQuery(queries.listConversations, [currentUserID, currentUserID]);
+    db.query(queries.listConversations, [currentUserID, currentUserID])
       .then((data) => {
-        console.log(data.rows);
-        // res.setHeader('Content-Type', 'application/json');
-        // res.end(JSON.stringify({ message: sentMessage }));
+        const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, currentUserID))
+        // console.log(data.rows);
+        console.log("Conversations count:", data.rowCount);
+        console.log(responseObj);
+        res.setHeader('Content-Type', 'application/json');
+        res.end(responseObj);
       })
       .catch(err => {
         res
