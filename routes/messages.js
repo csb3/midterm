@@ -8,13 +8,25 @@ const reconstructConvoObjs = function(objArray, currentUserID) {
   let newArr = [];
   for (let obj of objArray) {
     let newObj = {};
-    if (obj.buyer_id = currentUserID) {
+    if (obj.buyer_id === currentUserID) {
       newObj.username = obj.seller_user_name;
     } else {
       newObj.username = obj.buyer_user_name;
     }
     newObj.item_pic = obj.photo_url;
     newObj.item_name = obj.name;
+    newArr.push(newObj);
+  }
+  return newArr;
+};
+
+const reconstructMessageObjs = function(messageArray, currentUserID) {
+  let newArr = [];
+  for (let obj of messageArray) {
+    let newObj = {};
+    newObj.recipient = obj.recipient_name;
+    newObj.sender = obj.sender_name;
+    newObj.message = obj.content;
     newArr.push(newObj);
   }
   return newArr;
@@ -73,10 +85,14 @@ module.exports = (db) => {
   });
 
   router.post("/conversation", (req, res) => {
-    db.query(queries.listMessages)
-      .then(data => {
+    const conversationID = req.body.convID;
+    console.log('----------CONVERSATION ID:' ,conversationID);
+    printQuery(queries.listMessages, [conversationID]);
+    db.query(queries.listMessages, [conversationID])
+      .then((data) => {
+        const messagesString = JSON.stringify(reconstructMessageObjs(data.rows));
         res.setHeader('Content-Type', 'application/json');
-        // res.end(JSON.stringify({ message: sentMessage }));
+        res.end(messagesString);
       })
       .catch(err => {
         res
