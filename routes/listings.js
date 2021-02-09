@@ -37,7 +37,6 @@ module.exports = (db) => {
 
   router.get("/search", (req, res) => {
     // fetch all the search options
-    console.log(req.query);
     const { name, city, minPrice, maxPrice } = req.query;
 
     // track modifications to the search query
