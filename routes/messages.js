@@ -11,13 +11,15 @@ module.exports = (db) => {
     const targetListing = req.body.item;
     const senderID = req.session.userID;
 
+    // check if conversation already exists
     db.query(`SELECT *
     FROM conversations
     WHERE listing_id = $1
-    AND buyer_id = $2;`, [targetListing, senderID])
+    AND buyer_id = $2;
+    `, [targetListing, senderID])
       .then((data)=>{
         if (data.rows.length !== 0) {
-          // conversation exists, add new message to it. (next then statement)
+          // conversation exists, add new message to it. (proceed to next `then` statement)
           console.log('------------ Conversation exists.');
           return data;
         } else {
@@ -32,37 +34,21 @@ module.exports = (db) => {
         }
       })
       .then((data) => {
+        console.log('sending new message');
         const recipientID = data.rows[0].seller_id;
         return db.query(queries.createMessage, [senderID, recipientID, newMessage]);
+      })
+      .then((data) => {
+        console.log('message sent, returning JSON');
+        const sentMessage = JSON.stringify(data.rows[0]);
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ message: sentMessage }));
       })
       .catch(err => {
         res
           .status(500)
           .json({ error: err.message });
       });
-
-    // check if a conversation already exists
-
-    // create a conversation if a conversation does not exist
-
-    //
-    // db.query(queries.createConversation, [])
-    //   // create a new conversation first
-    //   .then((data) => {
-    //     // create a new message to add to the conversation
-    //     return db.query(queries.createMessage);
-    //   })
-    //   .then((data) => {
-    //     // this message can be returned to the UI to be rendered onto the page
-    //     const sentMessage = data.rows[0];
-    //     res.setHeader('Content-Type', 'application/json');
-    //     res.end(JSON.stringify({ message: sentMessage }));
-    //   })
-    //   .catch(err => {
-    //     res
-    //       .status(500)
-    //       .json({ error: err.message });
-    //   });
   });
 
   router.get("/conversation", (req, res) => {
