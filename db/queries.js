@@ -22,7 +22,7 @@ const queries = {
   JOIN messages on messages.conversation_id = conversations.id
   JOIN users x ON x.id = seller_id
   JOIN users y ON y.id = buyer_id
-  WHERE seller_id = $1 OR buyer_id = $1
+  WHERE seller_id = $1 OR buyer_id = $2
   GROUP BY conversations.id, listings.photo_url, listings.name, seller_user_name, buyer_user_name
   ORDER BY MAX(messages.timestamp) DESC;`,
 

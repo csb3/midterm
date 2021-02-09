@@ -2,6 +2,23 @@ const { render } = require('ejs');
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
+const printQuery = require('../lib/printQuery');
+
+const reconstructConvoObjs = function(objArray, currentUserID) {
+  let newArr = [];
+  for (let obj of objArray) {
+    let newObj = {};
+    if (obj.buyer_id = currentUserID) {
+      newObj.username = obj.seller_user_name;
+    } else {
+      newObj.username = obj.buyer_user_name;
+    }
+    newObj.item_pic = obj.photo_url;
+    newObj.item_name = obj.name;
+    newArr.push(newObj);
+  }
+  return newArr;
+};
 
 module.exports = (db) => {
 
@@ -51,10 +68,11 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/conversation", (req, res) => {
+  router.post("/conversation", (req, res) => {
     db.query(queries.listMessages)
       .then(data => {
-        // list all messages in a conversation
+        res.setHeader('Content-Type', 'application/json');
+        // res.end(JSON.stringify({ message: sentMessage }));
       })
       .catch(err => {
         res
@@ -63,10 +81,18 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/conversations", (req, res) => {
-    db.query(queries.listConversations)
-      .then(data => {
-        // list all conversations (no individual messages)
+  router.post("/conversations", (req, res) => {
+    const currentUserID = req.session.userID;
+
+    printQuery(queries.listConversations, [currentUserID, currentUserID]);
+    db.query(queries.listConversations, [currentUserID, currentUserID])
+      .then((data) => {
+        const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, currentUserID))
+        // console.log(data.rows);
+        console.log("Conversations count:", data.rowCount);
+        console.log(responseObj);
+        res.setHeader('Content-Type', 'application/json');
+        res.end(responseObj);
       })
       .catch(err => {
         res
