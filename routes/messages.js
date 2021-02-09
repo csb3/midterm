@@ -8,7 +8,7 @@ const reconstructConvoObjs = function(objArray, currentUserID) {
   let newArr = [];
   for (let obj of objArray) {
     let newObj = {};
-    if (obj.buyer_id = currentUserID) {
+    if (obj.buyer_id === currentUserID) {
       newObj.username = obj.seller_user_name;
     } else {
       newObj.username = obj.buyer_user_name;
@@ -74,8 +74,9 @@ module.exports = (db) => {
 
   router.post("/conversation", (req, res) => {
     db.query(queries.listMessages)
-      .then(data => {
-        res.setHeader('Content-Type', 'application/json');
+      .then((data) => {
+        console.log(data.rows);
+        // res.setHeader('Content-Type', 'application/json');
         // res.end(JSON.stringify({ message: sentMessage }));
       })
       .catch(err => {
