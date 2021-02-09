@@ -1,7 +1,8 @@
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
-const { templateVars } = require('../testingData');
+const templateVars = {};
+templateVars.user = {userID: 1, admin: true};
 
 // for debugging only, prints out the parameterized query with all parameters filled in
 const printQuery = function(queryString, queryParams) {

@@ -1,6 +1,6 @@
 
 const templateVars = {};
-templateVars.user = {userID: 1};
+templateVars.user = {userID: 1, admin: true};
 
 // load prewritten queries -DT
 const queries = require('./db/queries');
@@ -90,6 +90,10 @@ app.get("/", (req, res) => {
       }
     );
 });
+
+app.get('/testingroute', (req, res) => {
+  res.render('create', templateVars);
+})
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

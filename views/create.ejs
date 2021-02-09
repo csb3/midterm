@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BREAD</title>
+  <title>POST A NEW BREAD</title>
 
   <!--External CSS-->
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
@@ -17,8 +17,8 @@
   <!--Internal CSS-->
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
   <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
-  <link rel="stylesheet" href="/styles/single.css" type="text/css" />
   <link rel="stylesheet" href="/styles/chatWindow.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/create.css" type="text/css" />
 
 
 
@@ -27,44 +27,33 @@
   <!-- Nav Bar (fixed) -->
   <%- include ('partials/_nav') %>
 
-  <section class='titleBanner'>
-    <h1><%= item.name %> </h1>
-    <% if (user.admin) { %>
-      <button class='delete'>DELETE</button>
-      <button class='sold'>MARK SOLD</button>
-    <% } %>
-  </section>
-  <main id="<%- item.id %>">
-    <div>
-      <img src="<%- item.photo_url %>" alt="listing image">
-    </div>
-    <div class='details'>
-      <p class='userTag'>What the seller says:</p>
-      <p class="chalk">"<%= item.description %>"</p>
-      <span class='itemInfo'>
-      <% if (item.sold_date) { %>
-        <p class='sold'>SOLD!</p>
-      <% } else { %>
-        <p>$<%= (item.price / 100).toFixed(2) %></p>
-      <% } %>
-          <p>Posted by: <span><%= item.user_name %></span></p>
-          <p>City: <span><%= item.city %></span></p>
-          <p>Weight: <span><%= item.weight %>g</span></p>
-          <p>Posted: <span><%= item.creation_date %></span></p>
-      </span>
-          <div class="message">
-            <button>CONTACT THE SELLER</button>
-            <form>
-            <label for="buyerMessage">Enter your message here:</label>
-            <textarea name="message" id="buyerMessage" cols="30" rows="10"></textarea>
-            <button type="submit">SEND</button>
+  <main>
+    <h2>CREATE A NEW LISTING</h2>
+    <form>
+      <label for="name">Listing Title</label>
+      <input type="text" name="name" id="name" required>
 
-            </form>
-          </div>
-        </div>
+      <label for="description">Description</label>
+      <input type="textarea" name="description" id="description" required>
+
+      <label for="price"></label>
+      <input type="number" step="any" name="price" id="price" required>
+
+      <label for="photo_url">Photo URL</label>
+      <input type="text" name="photo_url" id="photo_url" required>
+
+      <label for="weight">Weight</label>
+      <input type="number" step="any" name="weight" id="weight" placeholder="In grams" required>
+
+      <label for="city">City</label>
+      <input type="text" name="city" id="city">
+
+      <button>SUBMIT</button>
+
+    </form>
+
 
   </main>
-
 
 
 
@@ -76,7 +65,6 @@
 
   <!--Internal JS-->
   <script type="text/javascript" src="/scripts/app.js"></script>
-  <script type="text/javascript" src="/scripts/initialMessage.js"></script>
   <script type="text/javascript" src="/scripts/messageHelpers.js"></script>
   <script type="text/javascript" src="/scripts/messaging.js"></script>
 

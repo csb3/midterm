@@ -74,10 +74,9 @@ const generateConversations = (elements) => {
       <h4>${instance.username}</h4>
       <p> Chatting about ${instance.item_name} </p>
     </div>`;
-
-    $('nav').on('click', '#' + instance.id, function (event) {
-
-      $.post('/api/messages/conversation', data = {convID: instance.id})
+    $('nav').on('click', '#' + instance.id, instance.id, function (event) {
+      const listingID = event.data
+      $.post('/api/messages/conversation', data = {convID: listingID})
         .done(mess => {
           fillWindow($chatWindow, mess, generateAllMessages );
         })
@@ -123,10 +122,10 @@ const generateAllMessages = (elements) => {
   }
 
   $('nav').on('click', '.back', function (event) {
-    $.get('/api/messages/conversations')
+    $.post('/api/messages/conversations')
       .done((conversations) => {
         fillWindow($chatWindow, conversations, generateConversations);
-        $('nav').append($chatWindow.hide());
+        $('nav').append($chatWindow);
       })
       .fail(err => {
         console.error(err);
