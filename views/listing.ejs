@@ -41,7 +41,7 @@
       <% if (item.sold) { %>
         <p class='sold'>SOLD!</p>
       <% } else { %>
-        <p>$<%= item.price / 100 %></p>
+        <p>$<%= (item.price / 100).toFixed(2) %></p>
       <% } %>
           <p>Posted by: <span><%= item.user_id %></span></p>
           <p>City: <span><%= item.city %></span></p>
