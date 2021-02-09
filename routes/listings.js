@@ -3,15 +3,6 @@ const router  = express.Router();
 const queries = require('../db/queries');
 const { templateVars } = require('../testingData');
 
-// helper function for constructing search queries
-const checkModifications = function(modified) {
-  if (modified) {
-    return 'AND';
-  } else {
-    return 'WHERE';
-  }
-};
-
 // for debugging only, prints out the parameterized query with all parameters filled in
 const printQuery = function(queryString, queryParams) {
   let newString = queryString;
@@ -46,7 +37,8 @@ module.exports = (db) => {
 
   router.get("/search", (req, res) => {
     // fetch all the search options
-    const { name, city, minPrice, maxPrice } = req.body;
+    console.log(req.query);
+    const { name, city, minPrice, maxPrice } = req.query;
 
     // track modifications to the search query
     let modifications = false;
@@ -57,32 +49,32 @@ module.exports = (db) => {
     // base query
     let queryString = `SELECT listings.*, favorites.user_id AS favorited
     FROM listings
-    LEFT OUTER JOIN favorites ON favorites.listing_id = listing.id
+    LEFT OUTER JOIN favorites ON favorites.listing_id = listings.id
     WHERE sold_date is NULL
-    AND deleted = false`;
+    AND deleted = false\n`;
 
     // dynamic additions based on search parameters
     if (name) {
       queryParams.push(`%${name.toLowerCase()}%`);
-      queryString += `${checkModifications(modifications)} name ILIKE $${queryParams.length}\n`;
+      queryString += `AND name ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (maxPrice) {
       queryParams.push(Math.floor(Number(maxPrice) * 100));
-      queryString += `${checkModifications(modifications)} price <= $${queryParams.length}\n`;
+      queryString += `AND price <= $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (minPrice) {
       queryParams.push(Math.floor(Number(minPrice) * 100));
-      queryString += `${checkModifications(modifications)} price >= $${queryParams.length}\n`;
+      queryString += `AND price >= $${queryParams.length}\n`;
       modifications = true;
     }
 
     if (city) {
       queryParams.push(`%${city.toLowerCase()}%`);
-      queryString += `${checkModifications(modifications)} city ILIKE $${queryParams.length}\n`;
+      queryString += `AND city ILIKE $${queryParams.length}\n`;
       modifications = true;
     }
 
@@ -96,7 +88,6 @@ module.exports = (db) => {
 
     db.query(queryString, queryParams)
       .then(data => {
-        console.log(data.rows);
         templateVars.recentListings = data.rows;
         templateVars.showFeatured = false;
         res.render('index', templateVars);
