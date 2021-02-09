@@ -65,9 +65,12 @@ module.exports = (db) => {
   });
 
   router.post("/conversations", (req, res) => {
-    db.query(queries.listConversations)
-      .then(data => {
-        res.setHeader('Content-Type', 'application/json');
+    const currentUserID = req.session.userID;
+    console.log(currentUserID);
+    db.query(queries.listConversations, [currentUserID])
+      .then((data) => {
+        console.log(data.rows);
+        // res.setHeader('Content-Type', 'application/json');
         // res.end(JSON.stringify({ message: sentMessage }));
       })
       .catch(err => {
