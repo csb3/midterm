@@ -86,7 +86,7 @@ module.exports = (db) => {
 
   router.post("/conversation", (req, res) => {
     const conversationID = req.body.convID;
-    console.log('----------' , conversationID);
+    console.log('----------CONVERSATION ID:' ,conversationID);
     printQuery(queries.listMessages, [conversationID]);
     db.query(queries.listMessages, [conversationID])
       .then((data) => {
