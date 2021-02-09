@@ -28,14 +28,27 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/login/:userEmail", (req, res) => {
-    // create cookie
-    req.session.userEmail = req.params.userEmail;
+  router.get("/login/:userID", (req, res) => {
+    const targetID = req.params.userID;
+    db.query('SELECT * FROM users WHERE id = $1 LIMIT 1;', [targetID])
+      .then(
+        (data) => {
+          if (data.rows[0] !== undefined) {
+            req.session.userEmail = data.rows[0].email;
+            res.redirect('/');
+          }
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
   });
 
   router.get("/logout", (req, res) => {
     // clear login cookie
     req.session = null;
+    res.redirect('/');
   });
 
 
