@@ -138,7 +138,7 @@ const generateAllMessages = (elements) => {
   return $allMessages;
 };
 
-const appendSingleMessage = (window, message) => {
+const getSingleMessage = (window, message) => {
   //Will be implemented to append the most recent message after it is sent
 }
 
