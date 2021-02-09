@@ -23,9 +23,9 @@ const queries = {
   WHERE deleted = false
   ORDER BY creation_date DESC
   LIMIT 12;`,
-  specificListing: `SELECT *, users.user_name FROM listings
+  specificListing: `SELECT listings.*, users.user_name FROM listings
   JOIN users ON listings.user_id = users.id
-  WHERE listings.user_id = $1 AND deleted = false;`,
+  WHERE listings.id = $1 AND deleted = false;`,
   browseMyListings: `SELECT *
   FROM listings
   WHERE user_id = $1 AND deleted = false;`,
