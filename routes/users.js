@@ -1,3 +1,4 @@
+const { Template } = require('ejs');
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
@@ -37,6 +38,8 @@ module.exports = (db) => {
             req.session.userName = data.rows[0].user_name;
             req.session.userID = data.rows[0].id;
             req.session.userCity = data.rows[0].city;
+
+            console.log('LOGGED IN', req.session.userName, req.session.userID, req.session.userCity);
             res.redirect('/');
           }
       })
@@ -51,6 +54,15 @@ module.exports = (db) => {
     // clear login cookie
     req.session = null;
     res.redirect('/');
+  });
+
+  router.get("/internal", (req, res) => {
+    if (req.session.userID) {
+      templateVars = { loggedIn: true };
+    } else {
+      templateVars = { loggedIn: false };
+    }
+    res.render('internal', templateVars);
   });
 
 
