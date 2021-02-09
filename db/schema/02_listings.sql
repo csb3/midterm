@@ -8,7 +8,7 @@ CREATE TABLE listings (
   price INTEGER NOT NULL,
   photo_url VARCHAR(255) NOT NULL,
   creation_date TIMESTAMP,
-  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   featured BOOLEAN DEFAULT FALSE,
   weight INTEGER NOT NULL,
   city VARCHAR(255) NOT NULL,
