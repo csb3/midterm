@@ -23,8 +23,9 @@ const queries = {
   WHERE deleted = false
   ORDER BY creation_date DESC
   LIMIT 12;`,
-  specificListing: `SELECT * FROM listings
-  WHERE id = $1 AND deleted = false;`,
+  specificListing: `SELECT listings.*, users.user_name FROM listings
+  JOIN users ON listings.user_id = users.id
+  WHERE listings.id = $1 AND deleted = false;`,
   browseMyListings: `SELECT *
   FROM listings
   WHERE user_id = $1 AND deleted = false;`,
@@ -38,12 +39,7 @@ const queries = {
   FROM listings
   WHERE featured = true AND deleted = false
   ORDER BY creation_date DESC
-  LIMIT 2;`,
-  postedBy: `SELECT users.user_name
-  FROM users
-  JOIN listings ON listings.user_id = users.id
-  WHERE listings.user_id = $1
-  GROUP BY users.user_name;`
+  LIMIT 2;`
 };
 
 module.exports = queries;
