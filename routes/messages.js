@@ -21,7 +21,14 @@ const reconstructConvoObjs = function(objArray, currentUserID) {
 };
 
 const reconstructMessageObjs = function(messageArray, currentUserID) {
-
+  let newArr = [];
+  for (let obj of messageArray) {
+    let newObj = {};
+    newObj.recipient = '';
+    newObj.sender = '';
+    newObj.message = '';
+  }
+  return newArr;
 };
 
 module.exports = (db) => {
