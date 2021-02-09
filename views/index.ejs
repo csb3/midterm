@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="/styles/listings.css" type="text/css" />
   <link rel="stylesheet" href="/styles/features.css" type="text/css" />
   <link rel="stylesheet" href="/styles/search.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/chatWindow.css" type="text/css" />
 
 </head>
 <body>
@@ -63,8 +64,7 @@
 
 
     <section class='listings'>
-    <% for (let i = recentListings.length - 1; i >= 0; i--) { %>
-      <% let bread = recentListings[i] %>
+    <% for (const bread of recentListings) { %>
       <div class ='listingItem'>
         <img src="<%- bread.photo_url %>" alt="A loaf of bread">
         <div class='details'>
@@ -98,6 +98,7 @@
   <!--Internal JS-->
   <script type="text/javascript" src="/scripts/app.js"></script>
   <script type="text/javascript" src="/scripts/filter.js"></script>
+  <script type="text/javascript" src="/scripts/messageHelpers.js"></script>
   <script type="text/javascript" src="/scripts/messaging.js"></script>
 </body>
 </html>
