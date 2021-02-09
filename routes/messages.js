@@ -52,12 +52,16 @@ module.exports = (db) => {
       })
       .then((data) => {
         console.log('sending new message');
+
         const recipientID = data.rows[0].seller_id;
-        return db.query(queries.createMessage, [senderID, recipientID, newMessage]);
+        const conversationID = data.rows[0].id;
+
+        return db.query(queries.createMessage, [conversationID, senderID, recipientID, newMessage]);
       })
       .then((data) => {
         console.log('message sent, returning JSON');
         const sentMessage = JSON.stringify(data.rows[0]);
+        console.log(sentMessage);
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ message: sentMessage }));
       })
@@ -88,9 +92,7 @@ module.exports = (db) => {
     db.query(queries.listConversations, [currentUserID, currentUserID])
       .then((data) => {
         const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, currentUserID))
-        // console.log(data.rows);
         console.log("Conversations count:", data.rowCount);
-        console.log(responseObj);
         res.setHeader('Content-Type', 'application/json');
         res.end(responseObj);
       })
