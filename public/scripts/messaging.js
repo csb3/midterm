@@ -1,19 +1,16 @@
 $(() => {
-  //fakeConversation
-
-
-
 
   const $navButton = $('.messages');
-
-  $chatWindow = $(`<div id='chatWindow'></div>`)
-
+  const $chatWindow = generateChatWindow();
 
 
   $navButton.click(event => {
-
-  })
-
-
-
+    if (!$('#chatWindow').length) {
+      fillWindow($chatWindow, convos, generateConversations);
+      $('nav').append($chatWindow.hide());
+    }
+      $('#chatWindow').animate({
+        height: "toggle",
+      });
+  });
 });
