@@ -24,9 +24,12 @@ const printQuery = function(queryString, queryParams) {
 module.exports = (db) => {
 
   router.post("/create", (req, res) => {
-    db.query(queries.createListing)
+    const { name, description, price, photo_url, user_id, weight, city } = req.body;
+
+    db.query(queries.createListing, [name, description, price, photo_url, user_id, weight, city])
       .then(data => {
-        // create a new listing
+        console.log('New listing created');
+        res.redirect(`/api/listings/browse/${data.rows[0].id}`);
       })
       .catch(err => {
         res
