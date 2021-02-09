@@ -34,7 +34,9 @@ module.exports = (db) => {
       .then(
         (data) => {
           if (data.rows[0] !== undefined) {
-            req.session.userEmail = data.rows[0].email;
+            req.session.userEmail = data.rows[0].user_name;
+            req.session.userID = data.rows[0].id;
+            req.session.userCity = data.rows[0].city;
             res.redirect('/');
           }
       })
