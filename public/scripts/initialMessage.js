@@ -19,7 +19,7 @@ $(() => {
   $sendButton.click(function (event) {
     event.preventDefault();
     const message = {
-      item: 'fake',
+      item: $('main').attr('id'),
       message: $(this).siblings('#buyerMessage').val()
     }
     $.post('/api/messages/create', message)
