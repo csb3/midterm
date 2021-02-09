@@ -19,11 +19,7 @@ module.exports = (db) => {
         if (data.rows.length !== 0) {
           // conversation exists, add new message to it. (next then statement)
           console.log('------------ Conversation exists.');
-          // console.log(data);
-          return new Promise (
-            (resolve, reject) => {
-              resolve(data);
-            });
+          return data;
         } else {
           // conversation does not exist, create it. (find seller first)
           console.log('------------ Conversation does not exist, creating it now.');
@@ -37,9 +33,13 @@ module.exports = (db) => {
       })
       .then((data) => {
         const recipientID = data.rows[0].seller_id;
-        console.log('creating message');
         return db.query(queries.createMessage, [senderID, recipientID, newMessage]);
       })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
 
     // check if a conversation already exists
 
