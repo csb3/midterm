@@ -136,7 +136,7 @@ const generateAllMessages = (elements) => {
 
   $('nav').on('click', '.send', function (event) {
 
-    $.post('/needsaroute', $('#newMessage').val())
+    $.post('/api/messages/create', $('#newMessage').val())
       .done((message) => {
         $('#chatWindow').append(`<div class='mes buy'>
           <p><span class='sender'>${message.sender}</span> : ${message.message}</p>
