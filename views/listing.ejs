@@ -38,7 +38,7 @@
       <p class='userTag'>What the seller says:</p>
       <p class="chalk">"<%= item.description %>"</p>
       <span class='itemInfo'>
-      <% if (item.sold) { %>
+      <% if (item.sold_date) { %>
         <p class='sold'>SOLD!</p>
       <% } else { %>
         <p>$<%= (item.price / 100).toFixed(2) %></p>
