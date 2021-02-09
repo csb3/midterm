@@ -6,7 +6,7 @@ $(() => {
 
   $navButton.click(event => {
     if (!$('#chatWindow').length) {
-      $.get('/api/messages/conversations')
+      $.post('/api/messages/conversations')
         .done((conversations) => {
           fillWindow($chatWindow, conversations, generateConversations);
           $('nav').append($chatWindow.hide());
