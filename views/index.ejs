@@ -41,7 +41,7 @@
               <div class='featureDetails'>
                 <h1><%= bread.name %></h1>
                 <span class="location"><%= bread.city %></span>
-                <p>ONLY $<%=bread.price / 100 %>!!</p>
+                <p>ONLY $<%=(bread.price / 100).toFixed(2) %>!!</p>
                 <p class='featureDescription'><%= bread.description.substring(0, 100) %></p>
                 <% let route = "/api/listings/browse/" + bread.id; %>
                 <a href="<%- route %>"><button> BUY NOW! </button></a>
@@ -70,7 +70,7 @@
         <div class='details'>
           <h3><%= bread.name %></h3>
           <span class="location"><%= bread.city %></span>
-          <p>$<%= bread.price / 100 %></p>
+          <p>$<%= (bread.price / 100).toFixed(2) %></p>
           <p class='description'><%= bread.description.substring(0, 100);%>
           <% if (bread.description.length > 100) { %>
             . . .
