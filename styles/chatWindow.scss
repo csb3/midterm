@@ -62,9 +62,11 @@
 
     .sell {
       background-color: $tertiaryColor;
+      align-self: flex-start;
       span {
         color: $baseColor;
       }
+      padding-left: 10px;
     }
 
     .buy {
