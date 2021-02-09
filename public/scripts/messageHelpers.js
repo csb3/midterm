@@ -134,13 +134,24 @@ const generateAllMessages = (elements) => {
       })
   });
 
+  $('nav').on('click', '.send', function (event) {
+
+    $.post('/needsaroute', $('#newMessage').val())
+      .done((message) => {
+        $('#chatWindow').append(`<div class='mes buy'>
+          <p><span class='sender'>${message.sender}</span> : ${message.message}</p>
+          </div>`)
+      })
+      .fail(err => {
+        console.error(err);
+        $('nav').append($chatWindow.append(`<h2>Couldn't send message, please try again later</h2>`).hide());
+      })
+  });
+
   $allMessages += generateControls();
   return $allMessages;
 };
 
-const getSingleMessage = (window, message) => {
-  //Will be implemented to append the most recent message after it is sent
-}
 
 
 
