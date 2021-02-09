@@ -21,13 +21,14 @@ const reconstructConvoObjs = function(objArray, currentUserID) {
   return newArr;
 };
 
-const reconstructMessageObjs = function(messageArray, currentUserID) {
+const reconstructMessageObjs = function(messageArray) {
   let newArr = [];
   for (let obj of messageArray) {
     let newObj = {};
     newObj.recipient = obj.recipient_name;
     newObj.sender = obj.sender_name;
     newObj.message = obj.content;
+    newObj.conversationID = obj.conversation_id;
     newArr.push(newObj);
   }
   return newArr;
@@ -58,7 +59,7 @@ module.exports = (db) => {
           return db.query('SELECT user_id FROM listings where id = $1', [targetListing])
             .then((data) => {
               const sellerID = data.rows[0].user_id;
-              console.log(sellerID, senderID);
+              // console.log(sellerID, senderID);
               return db.query(queries.createConversation, [targetListing, senderID, sellerID]);
             })
         }
@@ -73,8 +74,13 @@ module.exports = (db) => {
       })
       .then((data) => {
         console.log('message sent, returning JSON');
-        const sentMessage = JSON.stringify(data.rows[0]);
-        console.log(sentMessage);
+
+        // convert message
+        console.log(data.rows);
+        const reconstructedMessageObj = reconstructMessageObjs(data.rows)[0];
+        const sentMessage = JSON.stringify(reconstructedMessageObj);
+
+        console.log('---------------->', sentMessage);
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ message: sentMessage }));
       })
@@ -87,11 +93,12 @@ module.exports = (db) => {
 
   router.post("/conversation", (req, res) => {
     const conversationID = req.body.convID;
-    console.log('----------CONVERSATION ID:' ,conversationID);
+    // console.log('----------CONVERSATION ID:' ,conversationID);
     printQuery(queries.listMessages, [conversationID]);
     db.query(queries.listMessages, [conversationID])
       .then((data) => {
         const messagesString = JSON.stringify(reconstructMessageObjs(data.rows));
+        // console.log(data.rows);
         res.setHeader('Content-Type', 'application/json');
         res.end(messagesString);
       })
@@ -109,7 +116,7 @@ module.exports = (db) => {
     db.query(queries.listConversations, [currentUserID, currentUserID])
       .then((data) => {
         const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, currentUserID))
-        console.log("Conversations count:", data.rowCount);
+        // console.log("Conversations count:", data.rowCount);
         res.setHeader('Content-Type', 'application/json');
         res.end(responseObj);
       })
