@@ -15,6 +15,7 @@ const reconstructConvoObjs = function(objArray, currentUserID) {
     }
     newObj.item_pic = obj.photo_url;
     newObj.item_name = obj.name;
+    newObj.id = obj.id;
     newArr.push(newObj);
   }
   return newArr;
