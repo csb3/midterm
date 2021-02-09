@@ -18,7 +18,10 @@ $(() => {
 
   $sendButton.click(function (event) {
     event.preventDefault();
-    const message = $(this).siblings('#buyerMessage').val();
+    const message = {
+      item: $('main').attr('id'),
+      message: $(this).siblings('#buyerMessage').val()
+    }
     $.post('/api/messages/create', message)
       .done(res => {
         console.log('res',res);
