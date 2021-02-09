@@ -24,9 +24,10 @@ const reconstructMessageObjs = function(messageArray, currentUserID) {
   let newArr = [];
   for (let obj of messageArray) {
     let newObj = {};
-    newObj.recipient = '';
-    newObj.sender = '';
-    newObj.message = '';
+    newObj.recipient = obj.recipient_name;
+    newObj.sender = obj.sender_name;
+    newObj.message = obj.content;
+    newArr.push(newObj);
   }
   return newArr;
 };
@@ -85,12 +86,13 @@ module.exports = (db) => {
 
   router.post("/conversation", (req, res) => {
     const conversationID = req.body.convID;
+    console.log('----------' , conversationID);
     printQuery(queries.listMessages, [conversationID]);
     db.query(queries.listMessages, [conversationID])
       .then((data) => {
-        console.log(data.rows);
-        // res.setHeader('Content-Type', 'application/json');
-        // res.end(JSON.stringify({ message: sentMessage }));
+        const messagesString = JSON.stringify(reconstructMessageObjs(data.rows));
+        res.setHeader('Content-Type', 'application/json');
+        res.end(messagesString);
       })
       .catch(err => {
         res
