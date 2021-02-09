@@ -6,16 +6,41 @@ const queries = require('../db/queries');
 module.exports = (db) => {
 
   router.post("/create", (req, res) => {
-    const newMessage = req.body.buyerMessage;
-    db.query(queries.createConversation)
-      // create a new conversation first
-      .then((data) => {
-        // create a new message to add to the conversation
-        return db.query(queries.createMessage);
+
+    const newMessage = req.body.message;
+    const targetListing = req.body.item;
+    const senderID = req.session.userID;
+
+    // check if conversation already exists
+    db.query(`SELECT *
+    FROM conversations
+    WHERE listing_id = $1
+    AND buyer_id = $2;
+    `, [targetListing, senderID])
+      .then((data)=>{
+        if (data.rows.length !== 0) {
+          // conversation exists, add new message to it. (proceed to next `then` statement)
+          console.log('------------ Conversation exists.');
+          return data;
+        } else {
+          // conversation does not exist, create it. (find seller first)
+          console.log('------------ Conversation does not exist, creating it now.');
+          return db.query('SELECT user_id FROM listings where id = $1', [targetListing])
+            .then((data) => {
+              const sellerID = data.rows[0].user_id;
+              console.log(sellerID, senderID);
+              return db.query(queries.createConversation, [targetListing, senderID, sellerID]);
+            })
+        }
       })
       .then((data) => {
-        // this message can be returned to the UI to be rendered onto the page
-        const sentMessage = data.rows[0];
+        console.log('sending new message');
+        const recipientID = data.rows[0].seller_id;
+        return db.query(queries.createMessage, [senderID, recipientID, newMessage]);
+      })
+      .then((data) => {
+        console.log('message sent, returning JSON');
+        const sentMessage = JSON.stringify(data.rows[0]);
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ message: sentMessage }));
       })
