@@ -73,16 +73,18 @@ module.exports = (db) => {
         return db.query(queries.createMessage, [conversationID, senderID, recipientID, newMessage]);
       })
       .then((data) => {
-        console.log('message sent, returning JSON');
-
-        // convert message
-        console.log(data.rows);
-        const reconstructedMessageObj = reconstructMessageObjs(data.rows)[0];
-        const sentMessage = JSON.stringify(reconstructedMessageObj);
-
-        console.log('---------------->', sentMessage);
+        console.log('message sent');
+        // printQuery(queries.fetchSingleMessage, [data.rows[0].id]);
+        return db.query(queries.fetchSingleMessage, [data.rows[0].id]);
+      })
+      .then((data) => {
+        // console.log(data.rows);
+        const convertedMessageObj = reconstructMessageObjs(data.rows)[0];
+        console.log('-------> convertedObj', convertedMessageObj);
+        const messageJSON = JSON.stringify(convertedMessageObj);
+        console.log('-------> messageJSON', messageJSON);
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ message: sentMessage }));
+        res.end(messageJSON);
       })
       .catch(err => {
         res
@@ -94,7 +96,7 @@ module.exports = (db) => {
   router.post("/conversation", (req, res) => {
     const conversationID = req.body.convID;
     // console.log('----------CONVERSATION ID:' ,conversationID);
-    printQuery(queries.listMessages, [conversationID]);
+    // printQuery(queries.listMessages, [conversationID]);
     db.query(queries.listMessages, [conversationID])
       .then((data) => {
         const messagesString = JSON.stringify(reconstructMessageObjs(data.rows));
@@ -112,7 +114,7 @@ module.exports = (db) => {
   router.post("/conversations", (req, res) => {
     const currentUserID = req.session.userID;
 
-    printQuery(queries.listConversations, [currentUserID, currentUserID]);
+    // printQuery(queries.listConversations, [currentUserID, currentUserID]);
     db.query(queries.listConversations, [currentUserID, currentUserID])
       .then((data) => {
         const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, currentUserID))
