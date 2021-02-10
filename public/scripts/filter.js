@@ -1,11 +1,11 @@
 $(() => {
-
+  // console.log(userCity);
   const $searchForm = $(`
   <form method="GET" action="/api/listings/search">
     <label for="name">Name:</label>
     <input name="name" type="text" id="name">
     <label for="city">City:</label>
-    <input name="city" type="text" id="city">
+    <input name="city" type="text" id="city" value="${userCity}">
     <label>Price Range:</label>
     <span>
     <input name="minPrice" type="number" id="minPrice" step="any" min="0" placeholder="$">
