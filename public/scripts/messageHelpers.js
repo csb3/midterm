@@ -74,6 +74,7 @@ const generateConversations = (elements) => {
       <h4>${instance.username}</h4>
       <p> Chatting about ${instance.item_name} </p>
     </div>`;
+    $('nav').off();
     $('nav').on('click', '#' + instance.id, {id: instance.id, buyer: instance.username}, function (event) {
       const listingID = event.data.id;
       const buyer = event.data.buyer;
@@ -106,25 +107,28 @@ const generateControls = (convID) => {
 };
 
 const generateAllMessages = (elements, currentUser) => {
-  let $allMessages = ``;
+  let $allMessages = `<div class='messageContainer>`;
   // console.log(elements);
   const conversationID = elements[0].conversationID;
   for (const message of elements) {
     if (currentUser === message.sender) {
-      $allMessages += `
-      <div class='mes buy'>
-        <p><span class='sender'>${message.sender}</span> : ${message.message} </p>
+      $allMessages +=`
+      <div class='mes sell'>
+        <p><span class='sender'>${message.sender}</span>${message.message} </p>
       </div>
       `;
     } else {
       $allMessages += `
-      <div class='mes sell'>
-        <p><span class='sender'>${message.sender}</span> : ${message.message} </p>
+      <div class='mes buy'>
+        <p><span class='sender'>${message.sender}</span>${message.message} </p>
       </div>
       `;
     }
   }
 
+  $allMessages += `</div>`;
+
+  $('nav').off();
   $('nav').on('click', '.back', function(event) {
     $.post('/api/messages/conversations')
       .done((conversations) => {
@@ -142,7 +146,7 @@ const generateAllMessages = (elements, currentUser) => {
     $.post('/api/messages/create', { message: $('#newMessage').val(), item: $('#convID').val() } )
       .done((message) => {
         $('#chatWindow').append(`<div class='mes buy'>
-          <p><span class='sender'>${message.sender}</span> : ${message.message}</p>
+          <p><span class='sender'>${message.sender}</span>${message.message}</p>
           </div>`);
         $('#newMessage').val('');
       })

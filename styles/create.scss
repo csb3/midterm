@@ -5,13 +5,51 @@ main {
   display: flex;
   flex-direction: column;
   align-self: center;
+
+  h2 {
+    margin-top: 120px;
+    font-family: $headersText;
+    font-size: 3em;
+    color: $primaryColor;
+    border-bottom: 5px solid $secondaryColor;
+    width: 60%;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+
+    label {
+      font-family: $headersText;
+      font-size: 1.2em;
+      color: $primaryColor;
+    }
+
+    input {
+      border: none;
+      border-bottom: 3px solid $secondaryColor;
+      margin-bottom: 30px;
+      min-height: 30px;
+    }
+
+    button {
+      background-color: $secondaryColor;
+      color: $baseColor;
+      width: 25%;
+      padding: 0.3em;
+      border: none;
+    }
+
+    button:hover {
+      background-color: $primaryColor;
+    }
+
+    #description {
+      min-height: 200px;
+    }
+
+  }
 }
 
-h2 {
-  margin-top: 120px;
-  font-family: $headersText;
-  font-size: 3em;
-  color: $primaryColor;
-  border-bottom: 5px solid $secondaryColor;
-  width: 60%;
-}
+
