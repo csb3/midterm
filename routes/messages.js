@@ -69,7 +69,7 @@ module.exports = (db) => {
               const sellerID = data.rows[0].user_id;
               // console.log(sellerID, senderID);
               return db.query(queries.createConversation, [targetConv, senderID, sellerID]);
-            })
+            });
         }
       })
       .then((data) => {

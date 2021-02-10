@@ -30,10 +30,16 @@
   <section class='titleBanner'>
     <h1><%= item.name %> </h1>
     <% if (user.userID === item.user_id) { %>
-      <button class='delete'>DELETE</button>
-      <button class='sold'>MARK SOLD</button>
+      <% if(!item.deleted) { %>
+        <% let deleteRoute = "/api/listings/browse/" + item.id + "/delete"; %>
+      <form action="<%- deleteRoute %>" method="POST"><button class='delete'>DELETE</button></form>
+      <% } %>
+      <% if (!item.sold_date) { %>
+        <% let soldRoute = "/api/listings/browse/" + item.id + "/markSold"; %>
+        <form action="<%- soldRoute %>" method="POST"><button class='sold'>MARK SOLD</button></form>
+      <% } %>
     <% } %>
-      <button class='favourite'><i class="far fa-heart"></i></button>
+      <!-- <button class='favourite'><i class="far fa-heart"></i></button> -->
   </section>
   <main id="<%- item.id %>">
     <div>
@@ -81,6 +87,7 @@
   <!--Internal JS-->
   <script type="text/javascript" src="/scripts/app.js"></script>
   <script type="text/javascript" src="/scripts/initialMessage.js"></script>
+  <script type="text/javascript" src="/scripts/favourites.js"></script>
   <script type="text/javascript" src="/scripts/messageHelpers.js"></script>
   <script type="text/javascript" src="/scripts/messaging.js"></script>
 
