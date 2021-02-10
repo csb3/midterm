@@ -214,11 +214,16 @@ module.exports = (db) => {
 
   router.post("/browse/:listingID/delete", (req, res) => {
 
-    // checkPermission(req.session, req.params.listingID, templateVars, db)
-    //   .then((data) => {})
-
-    // templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
-    db.query(queries.deleteListing, [req.params.listingID])
+    checkPermission(req.session, req.params.listingID, templateVars, db)
+      .then((data) => {
+        console.log(data);
+        if (data.permission) {
+          console.log('LISTING DELETED');
+          return db.query(queries.deleteListing, [req.params.listingID]);
+        } else {
+          return console.log('ERROR: YOU DO NOT HAVE PERMISSION TO DELETE THIS LISTING.');
+        }
+      })
       .then(() => {
         res.redirect('/');
       })
@@ -230,10 +235,18 @@ module.exports = (db) => {
   });
 
   router.post("/browse/:listingID/markSold", (req, res) => {
-    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
-    const breadID = req.params.listingID;
-    db.query(queries.markAsSold, [req.params.listingID])
+
+    checkPermission(req.session, req.params.listingID, templateVars, db)
       .then((data) => {
+        console.log(data);
+        if (data.permission) {
+          console.log('LISTING MARKED AS SOLD');
+          return db.query(queries.markAsSold, [req.params.listingID]);
+        } else {
+          return console.log('ERROR: YOU DO NOT HAVE PERMISSION TO MARK THIS LISTING AS SOLD.');
+        }
+      })
+      .then(() => {
         templateVars.item = data.rows[0];
         res.redirect('/api/listings/browse/' + breadID);
       })
