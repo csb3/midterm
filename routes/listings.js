@@ -114,7 +114,7 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/addFavorite", (req, res) => {
+  router.post("/addFavorite", (req, res) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
@@ -122,9 +122,12 @@ module.exports = (db) => {
       return res.redirect('/');
     }
 
-    db.query(queries.addToFavorites)
+    const listingID = req.body.listingID;
+
+    db.query(queries.addToFavorites, [listingID, templateVars.user.id])
       .then(data => {
-        // add to favorites
+        console.log(data);
+        res.status(200).json({ status: true });
       })
       .catch(err => {
         res
@@ -133,7 +136,7 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/removeFavorite", (req, res) => {
+  router.post("/removeFavorite", (req, res) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
@@ -141,9 +144,12 @@ module.exports = (db) => {
       return res.redirect('/');
     }
 
-    db.query(queries.removeFavorite)
+    const listingID = req.body.listingID;
+
+    db.query(queries.removeFavorite, [listingID, templateVars.user.id])
       .then(data => {
-        // remove from favorites
+        console.log(data);
+        res.status(200).json({ status: true });
       })
       .catch(err => {
         res
