@@ -60,7 +60,7 @@
           <p>Posted: <span><%= item.creation_date.toString().slice(0, 15) %></span></p>
       </span>
           <div class="message">
-            <% if (user.userID) { %>
+            <% if (user) { %>
               <button>CONTACT THE SELLER</button>
               <form>
               <label for="buyerMessage">Enter your message here:</label>

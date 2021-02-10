@@ -53,6 +53,7 @@ app.use(express.static("public"));
 const usersRoutes = require("./routes/users");
 const listingsRoutes = require("./routes/listings");
 const messagesRoutes = require("./routes/messages");
+const { checkPermission } = require('./lib/routeHelpers');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -67,7 +68,7 @@ app.use("/api/messages", messagesRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
-  templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
+  const permission = checkPermission(req.session, false, templateVars, db);
   db.query(queries.browseRecentListings)
     .then(
       // results for recent listings

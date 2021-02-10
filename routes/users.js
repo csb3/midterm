@@ -58,6 +58,11 @@ module.exports = (db) => {
   });
 
   router.get("/internal", (req, res) => {
+    let templateVars = {};
+
+    console.log('checkperm:', checkPermission(req.session, false, templateVars, db));
+    console.log(templateVars);
+
     if (req.session.userID) {
       templateVars = { loggedIn: true };
     } else {

@@ -128,7 +128,7 @@ module.exports = (db) => {
   });
 
   router.get("/browse/:listingID", (req, res) => {
-    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
+    checkPermission(req.session, false, templateVars, db); // just assigns templateVars
     db.query(queries.specificListing, [req.params.listingID])
       .then(data => {
         templateVars.item = data.rows[0];

@@ -113,8 +113,13 @@ module.exports = (db) => {
   router.post("/conversations", (req, res) => {
     const currentUserID = req.session.userID;
 
-    // printQuery(queries.listConversations, [currentUserID, currentUserID]);
-    db.query(queries.listConversations, [currentUserID, currentUserID])
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
+      console.log('ERROR: YOU MUST BE LOGGED IN TO SEND MESSAGES');
+      return res.redirect('/');
+    }
+
+    db.query(queries.listConversations, [templateVars.user.ID, templateVars.user.ID])
       .then((data) => {
         const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, currentUserID));
         // console.log("Conversations count:", data.rowCount);
