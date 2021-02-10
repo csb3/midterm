@@ -56,7 +56,11 @@
     </section>
 
     <div class='listingsLabel'>
-      <h2>THE LATEST BREADS</h2>
+      <% if (user.favourites) { %>
+        <h2>MY FAVOURITES</h2>
+      <% } else { %>
+        <h2>THE LATEST BREADS</h2>
+      <% } %>
       <button class="initialFilter">FILTER</button>
       <div class='filter-options'>
       </div>

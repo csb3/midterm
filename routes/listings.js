@@ -97,7 +97,7 @@ module.exports = (db) => {
   });
 
   router.get("/favourites", (req, res) => {
-    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
+    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin, favourites: true};
     // print out the final query that will be run, for debugging only
     printQuery(queries.showFavorites, [req.session.userID]);
 
