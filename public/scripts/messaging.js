@@ -15,11 +15,11 @@ $(() => {
           console.error(err);
           $('nav').append($chatWindow.append(`<h2>Failed to get conversations, please try again later</h2>`).hide());
         })
-      .always(() =>{
-        $('#chatWindow').animate({
-          height: "toggle",
+        .always(() =>{
+          $('#chatWindow').animate({
+            height: "toggle",
+          });
         });
-      })
     } else {
       $('#chatWindow').animate({
         height: "toggle",
