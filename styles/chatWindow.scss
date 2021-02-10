@@ -7,7 +7,6 @@
     display: flex;
     flex-direction: column;
     width: 400px;
-    max-height: 700px;
     background-color: $baseColor;
     border: 4px solid $secondaryColor;
     align-items: center;
@@ -50,6 +49,8 @@
       background-color: #ffffff;
       width: 70%;
       justify-content: space-between;
+      position: relative;
+      margin-bottom: 10px;
 
 
       span {
@@ -57,6 +58,7 @@
         font-size: 1em;
         color: $secondaryColor;
         letter-spacing: normal;
+        padding: 0.2em;
       }
     }
 
@@ -65,12 +67,30 @@
       align-self: flex-start;
       span {
         color: $baseColor;
+        position: absolute;
+        top: -10px;
+        left: 0px;
+        background-color: $quadColor;
       }
       padding-left: 10px;
     }
 
     .buy {
       align-self: flex-end;
+      padding-left: 10px;
+
+      span {
+        position: absolute;
+        top: -15px;
+        right: 0px;
+        background-color: $featuresColor;
+        color: $baseColor;
+        margin-right: 10px;
+      }
+    }
+
+    .mes:first-child {
+      margin-top: 20px;
     }
 
     .controls {

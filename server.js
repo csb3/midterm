@@ -68,6 +68,7 @@ app.use("/api/messages", messagesRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
+  templateVars.user = {userID: req.session.userID}
   db.query(queries.browseRecentListings)
     .then(
       // results for recent listings
