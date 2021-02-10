@@ -50,7 +50,7 @@ const queries = {
   WHERE favorites.user_id = $1 AND listings.deleted = false
   ORDER BY favorites.id DESC;`,
   addToFavorites: `INSERT INTO favorites (listing_id, user_id) VALUES ($1, $2) RETURNING *;`,
-  removeFavorite: `DELETE FROM favorites WHERE id = $1;`,
+  removeFavorite: `DELETE FROM favorites WHERE listing_id=$1 AND user_id=$2;`,
   showFeatured: `SELECT *
   FROM listings
   WHERE featured = true AND deleted = false

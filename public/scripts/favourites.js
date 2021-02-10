@@ -8,7 +8,7 @@ $(() => {
   };
 
   const makeButton = (style) => {
-    return $button = $(`<button class='favourite><i class="${style} fa-heart"></i></button>`);
+    return $button = $(`<button class='favourite'><i class="${style} fa-heart"></i></button>`);
   };
 
   const isFavourite = (listingID) => {
@@ -19,7 +19,7 @@ $(() => {
     $('.titleBanner').on('click', '.favourite', listingID, function(event) {
       // unfavourites the item
       const listing = event.data;
-      $.post('/unfavourite', { listingID: listing })
+      $.post('/api/listings/removeFavorite', { listingID: listing })
         .done(data => {
           if (data) {
             notFavourite($('main').attr('id'));
@@ -37,7 +37,7 @@ $(() => {
     $('.titleBanner').on('click', '.favourite', listingID, function (event) {
       //favourites the item
       const listing = event.data;
-      $.post('/makeFavourite', listing)
+      $.post('/api/listings/addFavorite', {listingID: listing})
         .done(data => {
           if (data) {
             isFavourite($('main').attr('id'));
@@ -46,9 +46,9 @@ $(() => {
     });
   }
 
-  $.get('/checkfavourite', listingID)
+  $.post('/api/listings/checkFavorite', { listingID })
     .done(data => {
-      if (data) {
+      if (data.favorited) {
         isFavourite($('main').attr('id'));
       } else {
         notFavourite($('main').attr('id'));

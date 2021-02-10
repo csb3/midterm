@@ -96,8 +96,14 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/favourites", (req, res) => {
-    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin, favourites: true};
+  router.get("/favorites", (req, res) => {
+
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
+      console.log('ERROR: YOU MUST BE LOGGED IN TO VIEW YOUR FAVORITES.');
+      return res.redirect('/');
+    }
+
     // print out the final query that will be run, for debugging only
     printQuery(queries.showFavorites, [req.session.userID]);
 
@@ -114,6 +120,31 @@ module.exports = (db) => {
       });
   });
 
+  router.post("/checkFavorite", (req, res) => {
+
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
+      console.log('ERROR: YOU MUST BE LOGGED IN TO CHECK FAVORITES.');
+      return res.redirect('/');
+    }
+
+    const listingID = req.body.listingID;
+
+    db.query(`SELECT * FROM favorites WHERE user_id=$1 AND listing_id=$2`, [templateVars.user.ID, listingID])
+      .then((data) => {
+        if (data.rows.length !== 0) {
+          res.status(200).json({ favorited: true });
+        } else {
+          res.status(200).json({ favorited: false });
+        }
+        // console.log('------- checkfavorite', data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+  });
+
   router.post("/addFavorite", (req, res) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);
@@ -123,10 +154,11 @@ module.exports = (db) => {
     }
 
     const listingID = req.body.listingID;
+    // console.log('listingID:',listingID, 'user:', templateVars.user.ID);
 
-    db.query(queries.addToFavorites, [listingID, templateVars.user.id])
+    db.query(queries.addToFavorites, [listingID, templateVars.user.ID])
       .then(data => {
-        console.log(data);
+        // console.log('------- addfavorite', data);
         res.status(200).json({ status: true });
       })
       .catch(err => {
@@ -146,9 +178,9 @@ module.exports = (db) => {
 
     const listingID = req.body.listingID;
 
-    db.query(queries.removeFavorite, [listingID, templateVars.user.id])
-      .then(data => {
-        console.log(data);
+    db.query(queries.removeFavorite, [listingID, templateVars.user.ID])
+      .then((data) => {
+        // console.log('-------removeFavorite', data);
         res.status(200).json({ status: true });
       })
       .catch(err => {
