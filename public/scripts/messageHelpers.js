@@ -53,9 +53,9 @@ const user = {userID: 43, name: 'Bob'};
 
 
 // Helper functions for the messaging script
-const fillWindow = (window, object, generatorFunction) => {
+const fillWindow = (window, object, generatorFunction, optionalParam) => {
   window.empty();
-  window.append(generatorFunction(object));
+  window.append(generatorFunction(object, optionalParam));
 };
 
 const generateChatWindow = () => {
@@ -74,11 +74,12 @@ const generateConversations = (elements) => {
       <h4>${instance.username}</h4>
       <p> Chatting about ${instance.item_name} </p>
     </div>`;
-    $('nav').on('click', '#' + instance.id, instance.id, function (event) {
-      const listingID = event.data
+    $('nav').on('click', '#' + instance.id, {id: instance.id, buyer: instance.username}, function (event) {
+      const listingID = event.data.id;
+      const buyer = event.data.buyer;
       $.post('/api/messages/conversation', data = {convID: listingID})
         .done(mess => {
-          fillWindow($chatWindow, mess, generateAllMessages );
+          fillWindow($chatWindow, mess, generateAllMessages, buyer);
         })
         .fail(err => {
           $chatWindow.empty();
@@ -104,12 +105,12 @@ const generateControls = (convID) => {
   `
 };
 
-const generateAllMessages = (elements) => {
+const generateAllMessages = (elements, currentUser) => {
   let $allMessages = ``;
   // console.log(elements);
   const conversationID = elements[0].conversationID;
   for (const message of elements) {
-    if(user.name === message.sender) {
+    if(currentUser === message.sender) {
       $allMessages +=`
       <div class='mes buy'>
         <p><span class='sender'>${message.sender}</span> : ${message.message} </p>
