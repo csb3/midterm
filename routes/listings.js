@@ -187,10 +187,11 @@ module.exports = (db) => {
 
   router.post("/browse/:listingID/markSold", (req, res) => {
     templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
+    const breadID = req.params.listingID;
     db.query(queries.markAsSold, [req.params.listingID])
       .then((data) => {
         templateVars.item = data.rows[0];
-        res.render('listing', templateVars);
+        res.redirect('/api/listings/browse/' + breadID);
       })
       .catch(err => {
         res
