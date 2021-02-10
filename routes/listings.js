@@ -135,7 +135,7 @@ module.exports = (db) => {
   });
 
   router.get("/browse/:listingID", (req, res) => {
-    checkPermission(req.session, listingID, templateVars, db)
+    checkPermission(req.session, req.params.listingID, templateVars, db)
       .then((data) => {
         templateVars.item = data.listingObj;
         templateVars.permission = data.permission;

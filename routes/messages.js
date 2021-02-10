@@ -134,7 +134,7 @@ module.exports = (db) => {
       return res.redirect('/');
     }
 
-    db.query(queries.listConversations, [templateVars.user.ID, currentUserID])
+    db.query(queries.listConversations, [templateVars.user.ID, templateVars.user.ID])
       .then((data) => {
         const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, templateVars.user.ID))
         res.setHeader('Content-Type', 'application/json');
