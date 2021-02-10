@@ -2,28 +2,21 @@ const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
 const templateVars = {};
-
-// for debugging only, prints out the parameterized query with all parameters filled in
-const printQuery = function(queryString, queryParams) {
-  let newString = queryString;
-  let varCount = 0;
-  while (newString.includes('$')) {
-    varCount++;
-    if (typeof(queryParams[varCount - 1]) === 'number') {
-      newString = newString.replace(`$${varCount}`, queryParams[varCount - 1]);
-    } else {
-      newString = newString.replace(`$${varCount}`, `'${queryParams[varCount - 1]}'`);
-    }
-  }
-  // PRINT THE QUERY
-  console.log('------------------------ QUERY START');
-  console.log(newString.split('  ').join('')); // REMOVE EXTRA SPACES
-  console.log('------------------------ QUERY END');
-};
+// helper funcitons
+const printQuery = require('../lib/printQuery');
+const { checkPermission, checkItem } = require('../lib/routeHelpers');
 
 module.exports = (db) => {
 
   router.post("/create", (req, res) => {
+
+    const permission = checkPermission(req.session, false, templateVars, db);
+
+    if (!permission) {
+      console.log('ERROR: USER IS NOT AN ADMIN, NO PERMISSION TO CREATE LISTINGS');
+      return res.redirect('/');
+    }
+
     let { name, description, price, photo_url, user_id, weight, city } = req.body;
     user_id = user_id ? user_id : req.session.userID;
     price = Math.floor(price * 100);
@@ -104,6 +97,13 @@ module.exports = (db) => {
   });
 
   router.get("/addFavorite", (req, res) => {
+
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
+      console.log('ERROR: YOU MUST BE LOGGED IN TO ADD/REMOVE FAVORITES.');
+      return res.redirect('/');
+    }
+
     db.query(queries.addToFavorites)
       .then(data => {
         // add to favorites
@@ -116,6 +116,13 @@ module.exports = (db) => {
   });
 
   router.get("/removeFavorite", (req, res) => {
+
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
+      console.log('ERROR: YOU MUST BE LOGGED IN TO ADD/REMOVE FAVORITES.');
+      return res.redirect('/');
+    }
+
     db.query(queries.removeFavorite)
       .then(data => {
         // remove from favorites
@@ -128,10 +135,10 @@ module.exports = (db) => {
   });
 
   router.get("/browse/:listingID", (req, res) => {
-    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
-    db.query(queries.specificListing, [req.params.listingID])
-      .then(data => {
-        templateVars.item = data.rows[0];
+    checkPermission(req.session, listingID, templateVars, db)
+      .then((data) => {
+        templateVars.item = data.listingObj;
+        templateVars.permission = data.permission;
         res.render('listing', templateVars);
       })
       .catch(err => {

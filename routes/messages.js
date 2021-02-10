@@ -2,7 +2,10 @@ const { render } = require('ejs');
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
+const templateVars = {};
+// helper funcitons
 const printQuery = require('../lib/printQuery');
+const { checkPermission, checkItem } = require('../lib/routeHelpers');
 
 const reconstructConvoObjs = function(objArray, currentUserID) {
   let newArr = [];
@@ -37,6 +40,12 @@ const reconstructMessageObjs = function(messageArray) {
 module.exports = (db) => {
 
   router.post("/create", (req, res) => {
+
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
+      console.log('ERROR: YOU MUST BE LOGGED IN TO SEND MESSAGES');
+      return res.redirect('/');
+    }
 
     const newMessage = req.body.message;
     const targetConv = req.body.item;
@@ -93,6 +102,13 @@ module.exports = (db) => {
   });
 
   router.post("/conversation", (req, res) => {
+
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
+      console.log('ERROR: YOU MUST BE LOGGED IN TO VIEW CONVERSATIONS');
+      return res.redirect('/');
+    }
+
     const conversationID = req.body.convID;
     // console.log('----------CONVERSATION ID:' ,conversationID);
     // printQuery(queries.listMessages, [conversationID]);
@@ -111,13 +127,16 @@ module.exports = (db) => {
   });
 
   router.post("/conversations", (req, res) => {
-    const currentUserID = req.session.userID;
 
-    // printQuery(queries.listConversations, [currentUserID, currentUserID]);
-    db.query(queries.listConversations, [currentUserID, currentUserID])
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
+      console.log('ERROR: YOU MUST BE LOGGED IN TO SEND MESSAGES');
+      return res.redirect('/');
+    }
+
+    db.query(queries.listConversations, [templateVars.user.ID, currentUserID])
       .then((data) => {
-        const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, currentUserID));
-        // console.log("Conversations count:", data.rowCount);
+        const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, templateVars.user.ID))
         res.setHeader('Content-Type', 'application/json');
         res.end(responseObj);
       })
