@@ -51,11 +51,11 @@ module.exports = (db) => {
       .then((data)=>{
         if (data.rows.length !== 0) {
           // conversation exists, add new message to it. (proceed to next `then` statement)
-          console.log('------------ Conversation exists.');
+          console.log(`------------ Conversation (${targetListing}) exists.`);
           return data;
         } else {
           // conversation does not exist, create it. (find seller first)
-          console.log('------------ Conversation does not exist, creating it now.');
+          console.log(`------------ Conversation (${targetListing}) does not exist, creating it now.`);
           return db.query('SELECT user_id FROM listings where id = $1', [targetListing])
             .then((data) => {
               const sellerID = data.rows[0].user_id;
@@ -65,10 +65,10 @@ module.exports = (db) => {
         }
       })
       .then((data) => {
-        console.log('sending new message');
-
+        console.log(data);
         const recipientID = data.rows[0].seller_id;
-        const conversationID = data.rows[0].id;
+        const conversationID = data.rows[0].listing_id;
+        console.log('sending new message to', conversationID);
 
         return db.query(queries.createMessage, [conversationID, senderID, recipientID, newMessage]);
       })
