@@ -93,10 +93,11 @@ const generateConversations = (elements) => {
   return $conversation;
 };
 
-const generateControls = () => {
+const generateControls = (convID) => {
   return `
   <div class='controls'>
     <label for "newMessage">New Message:</label>
+    <input type="hidden" value="${convID}" id="convID">
     <textarea name="newMessage" id="newMessage"></textarea>
     <button class='send'>Send</button>
     <button class='back'>Back</button>
@@ -106,6 +107,8 @@ const generateControls = () => {
 
 const generateAllMessages = (elements, currentUser) => {
   let $allMessages = ``;
+  // console.log(elements);
+  const conversationID = elements[0].conversationID;
   for (const message of elements) {
     if(currentUser === message.sender) {
       $allMessages +=`
@@ -136,7 +139,7 @@ const generateAllMessages = (elements, currentUser) => {
 
   $('nav').on('click', '.send', function (event) {
 
-    $.post('/api/messages/create', $('#newMessage').val())
+    $.post('/api/messages/create', { message: $('#newMessage').val(), item: $('#convID').val() } )
       .done((message) => {
         $('#chatWindow').append(`<div class='mes buy'>
           <p><span class='sender'>${message.sender}</span> : ${message.message}</p>
@@ -148,7 +151,7 @@ const generateAllMessages = (elements, currentUser) => {
       })
   });
 
-  $allMessages += generateControls();
+  $allMessages += generateControls(conversationID);
   return $allMessages;
 };
 
