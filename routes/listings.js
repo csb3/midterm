@@ -135,10 +135,10 @@ module.exports = (db) => {
   });
 
   router.get("/browse/:listingID", (req, res) => {
-    checkPermission(req.session, req.params.listingID, templateVars, db)
-      .then((data) => {
-        templateVars.item = data.listingObj;
-        templateVars.permission = data.permission;
+    checkPermission(req.session, false, templateVars, db); // just assigns templateVars
+    db.query(queries.specificListing, [req.params.listingID])
+      .then(data => {
+        templateVars.item = data.rows[0];
         res.render('listing', templateVars);
       })
       .catch(err => {
