@@ -98,8 +98,8 @@ module.exports = (db) => {
 
   router.get("/addFavorite", (req, res) => {
 
-    checkPermission(req.session, false, templateVars, db);
-    if (!templateVars.user) {
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
       console.log('ERROR: YOU MUST BE LOGGED IN TO ADD/REMOVE FAVORITES.');
       return res.redirect('/');
     }
@@ -117,8 +117,8 @@ module.exports = (db) => {
 
   router.get("/removeFavorite", (req, res) => {
 
-    checkPermission(req.session, false, templateVars, db);
-    if (!templateVars.user) {
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
       console.log('ERROR: YOU MUST BE LOGGED IN TO ADD/REMOVE FAVORITES.');
       return res.redirect('/');
     }
