@@ -3,9 +3,9 @@ const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
 const templateVars = {};
-// helper funcitons
+// helper functions
 const printQuery = require('../lib/printQuery');
-const { checkPermission, checkItem } = require('../lib/routeHelpers');
+const { checkPermission } = require('../lib/routeHelpers');
 
 module.exports = (db) => {
 
@@ -43,8 +43,7 @@ module.exports = (db) => {
             req.session.userID = data.rows[0].id;
             req.session.userCity = data.rows[0].city;
             req.session.isAdmin = data.rows[0].is_admin;
-
-            console.log('LOGGED IN', req.session.userName, req.session.userID, req.session.userCity);
+            // console.log('LOGGED IN', req.session.userName, req.session.userID, req.session.userCity);
             res.redirect('/');
           }
         })
@@ -63,9 +62,6 @@ module.exports = (db) => {
 
   router.get("/internal", (req, res) => {
     let templateVars = {};
-
-    console.log('checkperm:', checkPermission(req.session, false, templateVars, db));
-    console.log(templateVars);
 
     if (req.session.userID) {
       templateVars = { loggedIn: true };
