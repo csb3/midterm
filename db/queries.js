@@ -15,6 +15,12 @@ const queries = {
   JOIN users y ON y.id = sender_id
   WHERE conversations.id = $1
   ORDER BY timestamp;`,
+  fetchSingleMessage: `SELECT messages.*, conversations.*, x.user_name AS recipient_name, y.user_name AS sender_name
+  FROM messages
+  JOIN conversations ON conversation_id = conversations.id
+  JOIN users x ON x.id = recipient_id
+  JOIN users y ON y.id = sender_id
+  WHERE messages.id = $1;`,
   listConversations: `
   SELECT conversations.*, listings.photo_url, listings.name, x.user_name AS seller_user_name, y.user_name AS buyer_user_name
   FROM conversations

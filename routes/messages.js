@@ -21,13 +21,14 @@ const reconstructConvoObjs = function(objArray, currentUserID) {
   return newArr;
 };
 
-const reconstructMessageObjs = function(messageArray, currentUserID) {
+const reconstructMessageObjs = function(messageArray) {
   let newArr = [];
   for (let obj of messageArray) {
     let newObj = {};
     newObj.recipient = obj.recipient_name;
     newObj.sender = obj.sender_name;
     newObj.message = obj.content;
+    newObj.conversationID = obj.conversation_id;
     newArr.push(newObj);
   }
   return newArr;
@@ -50,33 +51,40 @@ module.exports = (db) => {
       .then((data)=>{
         if (data.rows.length !== 0) {
           // conversation exists, add new message to it. (proceed to next `then` statement)
-          console.log('------------ Conversation exists.');
+          console.log(`------------ Conversation (${targetListing}) exists.`);
           return data;
         } else {
           // conversation does not exist, create it. (find seller first)
-          console.log('------------ Conversation does not exist, creating it now.');
+          console.log(`------------ Conversation (${targetListing}) does not exist, creating it now.`);
           return db.query('SELECT user_id FROM listings where id = $1', [targetListing])
             .then((data) => {
               const sellerID = data.rows[0].user_id;
-              console.log(sellerID, senderID);
+              // console.log(sellerID, senderID);
               return db.query(queries.createConversation, [targetListing, senderID, sellerID]);
             })
         }
       })
       .then((data) => {
-        console.log('sending new message');
-
+        console.log(data);
         const recipientID = data.rows[0].seller_id;
-        const conversationID = data.rows[0].id;
+        const conversationID = data.rows[0].listing_id;
+        console.log('sending new message to', conversationID);
 
         return db.query(queries.createMessage, [conversationID, senderID, recipientID, newMessage]);
       })
       .then((data) => {
-        console.log('message sent, returning JSON');
-        const sentMessage = JSON.stringify(data.rows[0]);
-        console.log(sentMessage);
+        console.log('message sent');
+        // printQuery(queries.fetchSingleMessage, [data.rows[0].id]);
+        return db.query(queries.fetchSingleMessage, [data.rows[0].id]);
+      })
+      .then((data) => {
+        // console.log(data.rows);
+        const convertedMessageObj = reconstructMessageObjs(data.rows)[0];
+        console.log('-------> convertedObj', convertedMessageObj);
+        const messageJSON = JSON.stringify(convertedMessageObj);
+        console.log('-------> messageJSON', messageJSON);
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ message: sentMessage }));
+        res.end(messageJSON);
       })
       .catch(err => {
         res
@@ -87,11 +95,12 @@ module.exports = (db) => {
 
   router.post("/conversation", (req, res) => {
     const conversationID = req.body.convID;
-    console.log('----------CONVERSATION ID:' ,conversationID);
-    printQuery(queries.listMessages, [conversationID]);
+    // console.log('----------CONVERSATION ID:' ,conversationID);
+    // printQuery(queries.listMessages, [conversationID]);
     db.query(queries.listMessages, [conversationID])
       .then((data) => {
         const messagesString = JSON.stringify(reconstructMessageObjs(data.rows));
+        // console.log(data.rows);
         res.setHeader('Content-Type', 'application/json');
         res.end(messagesString);
       })
@@ -105,11 +114,11 @@ module.exports = (db) => {
   router.post("/conversations", (req, res) => {
     const currentUserID = req.session.userID;
 
-    printQuery(queries.listConversations, [currentUserID, currentUserID]);
+    // printQuery(queries.listConversations, [currentUserID, currentUserID]);
     db.query(queries.listConversations, [currentUserID, currentUserID])
       .then((data) => {
         const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, currentUserID))
-        console.log("Conversations count:", data.rowCount);
+        // console.log("Conversations count:", data.rowCount);
         res.setHeader('Content-Type', 'application/json');
         res.end(responseObj);
       })
