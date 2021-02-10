@@ -74,6 +74,7 @@ const generateConversations = (elements) => {
       <h4>${instance.username}</h4>
       <p> Chatting about ${instance.item_name} </p>
     </div>`;
+    $('nav').off();
     $('nav').on('click', '#' + instance.id, {id: instance.id, buyer: instance.username}, function (event) {
       const listingID = event.data.id;
       const buyer = event.data.buyer;
@@ -127,6 +128,7 @@ const generateAllMessages = (elements, currentUser) => {
 
   $allMessages += `</div>`;
 
+  $('nav').off();
   $('nav').on('click', '.back', function(event) {
     $.post('/api/messages/conversations')
       .done((conversations) => {
