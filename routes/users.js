@@ -2,7 +2,10 @@ const { Template } = require('ejs');
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
-const { checkPermission } = require('../lib/routeHelpers');
+const templateVars = {};
+// helper funcitons
+const printQuery = require('../lib/printQuery');
+const { checkPermission, checkItem } = require('../lib/routeHelpers');
 
 module.exports = (db) => {
 
@@ -61,8 +64,7 @@ module.exports = (db) => {
   router.get("/internal", (req, res) => {
     let templateVars = {};
 
-    checkPermission(req.session, 1, templateVars, db)
-      .then(data => console.log(data));
+    console.log(checkPermission(req.session, false, templateVars, db));
     console.log(templateVars);
 
     if (req.session.userID) {

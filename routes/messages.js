@@ -2,7 +2,10 @@ const { render } = require('ejs');
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
+const templateVars = {};
+// helper funcitons
 const printQuery = require('../lib/printQuery');
+const { checkPermission, checkItem } = require('../lib/routeHelpers');
 
 const reconstructConvoObjs = function(objArray, currentUserID) {
   let newArr = [];
