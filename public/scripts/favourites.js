@@ -19,7 +19,7 @@ $(() => {
     $('.titleBanner').on('click', '.favourite', listingID, function(event) {
       // unfavourites the item
       const listing = event.data;
-      $.post('/unfavourite', listing)
+      $.post('/unfavourite', { listingID: listing })
         .done(data => {
           if (data) {
             notFavourite($('main').attr('id'));
