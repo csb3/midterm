@@ -39,28 +39,27 @@ module.exports = (db) => {
   router.post("/create", (req, res) => {
 
     const newMessage = req.body.message;
-    const targetListing = req.body.item;
+    const targetConv = req.body.item;
     const senderID = req.session.userID;
 
     // check if conversation already exists
     db.query(`SELECT *
     FROM conversations
-    WHERE listing_id = $1
-    AND buyer_id = $2;
-    `, [targetListing, senderID])
+    WHERE id = $1;
+    `, [targetConv])
       .then((data)=>{
         if (data.rows.length !== 0) {
           // conversation exists, add new message to it. (proceed to next `then` statement)
-          console.log(`------------ Conversation (${targetListing}) exists.`);
+          console.log(`------------ Conversation (${targetConv}) exists.`);
           return data;
         } else {
           // conversation does not exist, create it. (find seller first)
-          console.log(`------------ Conversation (${targetListing}) does not exist, creating it now.`);
-          return db.query('SELECT user_id FROM listings where id = $1', [targetListing])
+          console.log(`------------ Conversation (${targetConv}) does not exist, creating it now.`);
+          return db.query('SELECT user_id FROM listings where id = $1', [targetConv])
             .then((data) => {
               const sellerID = data.rows[0].user_id;
               // console.log(sellerID, senderID);
-              return db.query(queries.createConversation, [targetListing, senderID, sellerID]);
+              return db.query(queries.createConversation, [targetConv, senderID, sellerID]);
             })
         }
       })
