@@ -29,10 +29,10 @@
 
   <section class='titleBanner'>
     <h1><%= item.name %> </h1>
-    <% if (user.admin) { %>
+    <% if (user.userID === item.user_id) { %>
       <button class='delete'>DELETE</button>
       <button class='sold'>MARK SOLD</button>
-    <% } %>
+    <% console.log("User keys", Object.keys(user), "item keys", Object.keys(item))} %>
   </section>
   <main id="<%- item.id %>">
     <div>
