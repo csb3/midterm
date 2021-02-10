@@ -107,7 +107,7 @@ const generateControls = (convID) => {
 };
 
 const generateAllMessages = (elements, currentUser) => {
-  let $allMessages = `<div class='messageContainer>`;
+  let $allMessages = `<div class='messageContainer'>`;
   // console.log(elements);
   const conversationID = elements[0].conversationID;
   for (const message of elements) {
@@ -145,7 +145,7 @@ const generateAllMessages = (elements, currentUser) => {
 
     $.post('/api/messages/create', { message: $('#newMessage').val(), item: $('#convID').val() } )
       .done((message) => {
-        $('#chatWindow').append(`<div class='mes buy'>
+        $('.messageContainer').append(`<div class='mes buy'>
           <p><span class='sender'>${message.sender}</span>${message.message}</p>
           </div>`);
         $('#newMessage').val('');
