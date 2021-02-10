@@ -136,10 +136,16 @@ module.exports = (db) => {
 
   router.get("/browse/:listingID", (req, res) => {
     checkPermission(req.session, false, templateVars, db); // just assigns templateVars
+
     db.query(queries.specificListing, [req.params.listingID])
       .then(data => {
-        templateVars.item = data.rows[0];
-        res.render('listing', templateVars);
+        if (data.rows.length !== 0) {
+          templateVars.item = data.rows[0];
+          res.render('listing', templateVars);
+        } else {
+          console.log('ERROR: THE LISTING DOES NOT EXIST');
+          res.redirect('/');
+        }
       })
       .catch(err => {
         res
