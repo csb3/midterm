@@ -34,6 +34,8 @@ module.exports = (db) => {
   });
 
   router.get("/search", (req, res) => {
+    checkPermission(req.session, false, templateVars, db);
+
     // fetch all the search options
     const { name, city, minPrice, maxPrice } = req.query;
 
@@ -82,6 +84,8 @@ module.exports = (db) => {
 
     // print out the final query that will be run, for debugging only
     printQuery(queryString, queryParams);
+
+    templateVars.favoritePage = false;
 
     db.query(queryString, queryParams)
       .then(data => {
