@@ -1,6 +1,5 @@
 
 const templateVars = {};
-templateVars.user = {userID: 1, admin: true};
 
 // load prewritten queries -DT
 const queries = require('./db/queries');
@@ -68,7 +67,7 @@ app.use("/api/messages", messagesRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
-  templateVars.user = {userID: req.session.userID}
+  templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
   db.query(queries.browseRecentListings)
     .then(
       // results for recent listings
