@@ -3,9 +3,9 @@ const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
 const templateVars = {};
-// helper funcitons
+// helper functions
 const printQuery = require('../lib/printQuery');
-const { checkPermission, checkItem } = require('../lib/routeHelpers');
+const { checkPermission } = require('../lib/routeHelpers');
 
 const reconstructConvoObjs = function(objArray, currentUserID) {
   let newArr = [];
@@ -59,11 +59,11 @@ module.exports = (db) => {
       .then((data)=>{
         if (data.rows.length !== 0) {
           // conversation exists, add new message to it. (proceed to next `then` statement)
-          console.log(`------------ Conversation (${targetConv}) exists.`);
+          // console.log(`------------ Conversation (${targetConv}) exists.`);
           return data;
         } else {
           // conversation does not exist, create it. (find seller first)
-          console.log(`------------ Conversation (${targetConv}) does not exist, creating it now.`);
+          // console.log(`------------ Conversation (${targetConv}) does not exist, creating it now.`);
           return db.query('SELECT user_id FROM listings where id = $1', [targetConv])
             .then((data) => {
               const sellerID = data.rows[0].user_id;
@@ -73,24 +73,24 @@ module.exports = (db) => {
         }
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         const recipientID = data.rows[0].seller_id;
         const conversationID = data.rows[0].id;
-        console.log('sending new message to', conversationID);
+        // console.log('sending new message to', conversationID);
 
         return db.query(queries.createMessage, [conversationID, senderID, recipientID, newMessage]);
       })
       .then((data) => {
-        console.log('message sent');
+        // console.log('message sent');
         // printQuery(queries.fetchSingleMessage, [data.rows[0].id]);
         return db.query(queries.fetchSingleMessage, [data.rows[0].id]);
       })
       .then((data) => {
         // console.log(data.rows);
         const convertedMessageObj = reconstructMessageObjs(data.rows)[0];
-        console.log('-------> convertedObj', convertedMessageObj);
+        // console.log('-------> convertedObj', convertedMessageObj);
         const messageJSON = JSON.stringify(convertedMessageObj);
-        console.log('-------> messageJSON', messageJSON);
+        // console.log('-------> messageJSON', messageJSON);
         res.setHeader('Content-Type', 'application/json');
         res.end(messageJSON);
       })

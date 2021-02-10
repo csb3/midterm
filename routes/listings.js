@@ -2,9 +2,9 @@ const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
 const templateVars = {};
-// helper funcitons
+// helper functions
 const printQuery = require('../lib/printQuery');
-const { checkPermission, checkItem } = require('../lib/routeHelpers');
+const { checkPermission } = require('../lib/routeHelpers');
 
 module.exports = (db) => {
 
