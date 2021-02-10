@@ -26,4 +26,4 @@ set featured items to items with most favourites
 TODO:
 1. Users need to be able to favourite items, and then filter by favourites
 3. Admin needs to be able to delete items, or mark as sold. Buttons for this exist
-4. Do we want admin to be able to delete/sold any item?
+
