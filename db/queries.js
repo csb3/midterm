@@ -35,7 +35,7 @@ const queries = {
   // LISTINGS QUERIES
   createListing: `INSERT INTO listings (name, description, price, photo_url, creation_date, user_id, weight, city) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP, $5, $6, $7) RETURNING *;`, // SHOULD RETURN THE NEW LISTING USING SQL 'RETURNING *'
   browseRecentListings: `SELECT * FROM listings
-  WHERE deleted = false
+  WHERE deleted = false AND sold_date IS NULL
   ORDER BY creation_date DESC
   LIMIT 12;`,
   specificListing: `SELECT listings.*, users.user_name FROM listings
