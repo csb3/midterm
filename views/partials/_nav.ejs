@@ -17,15 +17,19 @@
           <i class="fas fa-heart"></i>
           FAVOURITES
         </button>
-        <button class='logout'>
-          <i class="fas fa-sign-out-alt"></i>
-          LOGOUT
-        </button>
+        <a href="/api/users/logout">
+          <button class='logout'>
+            <i class="fas fa-sign-out-alt"></i>
+            LOGOUT
+          </button>
+        </a>
       <% } else { %>
-        <button class='login'>
-          <i class="fas fa-sign-in-alt"></i>
-          LOGIN
-        </button>
+        <a href="/api/users/login/1">
+          <button class='login'>
+            <i class="fas fa-sign-in-alt"></i>
+            LOGIN
+          </button>
+        </a>
       <% } %>
       </div>
   </nav>

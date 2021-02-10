@@ -112,14 +112,14 @@ const generateAllMessages = (elements, currentUser) => {
   for (const message of elements) {
     if(currentUser === message.sender) {
       $allMessages +=`
-      <div class='mes buy'>
-        <p><span class='sender'>${message.sender}</span> : ${message.message} </p>
+      <div class='mes sell'>
+        <p><span class='sender'>${message.sender}</span>${message.message} </p>
       </div>
       `
     } else {
       $allMessages +=`
-      <div class='mes sell'>
-        <p><span class='sender'>${message.sender}</span> : ${message.message} </p>
+      <div class='mes buy'>
+        <p><span class='sender'>${message.sender}</span>${message.message} </p>
       </div>
       `
     }
@@ -142,7 +142,7 @@ const generateAllMessages = (elements, currentUser) => {
     $.post('/api/messages/create', { message: $('#newMessage').val(), item: $('#convID').val() } )
       .done((message) => {
         $('#chatWindow').append(`<div class='mes buy'>
-          <p><span class='sender'>${message.sender}</span> : ${message.message}</p>
+          <p><span class='sender'>${message.sender}</span>${message.message}</p>
           </div>`)
       })
       .fail(err => {
