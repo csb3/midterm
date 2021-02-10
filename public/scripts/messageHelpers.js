@@ -106,7 +106,7 @@ const generateControls = (convID) => {
 };
 
 const generateAllMessages = (elements, currentUser) => {
-  let $allMessages = ``;
+  let $allMessages = `<div class='messageContainer>`;
   // console.log(elements);
   const conversationID = elements[0].conversationID;
   for (const message of elements) {
@@ -124,6 +124,8 @@ const generateAllMessages = (elements, currentUser) => {
       `
     }
   }
+
+  $allMessages += `</div>`
 
   $('nav').on('click', '.back', function (event) {
     $.post('/api/messages/conversations')
