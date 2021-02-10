@@ -24,7 +24,9 @@ const printQuery = function(queryString, queryParams) {
 module.exports = (db) => {
 
   router.post("/create", (req, res) => {
-    const { name, description, price, photo_url, user_id, weight, city } = req.body;
+    let { name, description, price, photo_url, user_id, weight, city } = req.body;
+    user_id = user_id ? user_id : req.session.userID;
+    price = Math.floor(price * 100);
 
     db.query(queries.createListing, [name, description, price, photo_url, user_id, weight, city])
       .then(data => {
