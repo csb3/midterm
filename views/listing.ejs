@@ -33,6 +33,7 @@
       <button class='delete'>DELETE</button>
       <button class='sold'>MARK SOLD</button>
     <% } %>
+      <button class='favourite'><i class="far fa-heart"></i></button>
   </section>
   <main id="<%- item.id %>">
     <div>
@@ -53,12 +54,15 @@
           <p>Posted: <span><%= item.creation_date.toString().slice(0, 15) %></span></p>
       </span>
           <div class="message">
-            <button>CONTACT THE SELLER</button>
-            <form>
-            <label for="buyerMessage">Enter your message here:</label>
-            <textarea name="message" id="buyerMessage" cols="30" rows="10"></textarea>
-            <button type="submit">SEND</button>
-
+            <% if (user.userID) { %>
+              <button>CONTACT THE SELLER</button>
+              <form>
+              <label for="buyerMessage">Enter your message here:</label>
+              <textarea name="message" id="buyerMessage" cols="30" rows="10"></textarea>
+              <button type="submit">SEND</button>
+            <% } else { %>
+              <p>You need to be logged in to message the seller</p>
+            <% } %>
             </form>
           </div>
         </div>
