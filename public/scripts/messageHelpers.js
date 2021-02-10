@@ -145,7 +145,7 @@ const generateAllMessages = (elements, currentUser) => {
 
     $.post('/api/messages/create', { message: $('#newMessage').val(), item: $('#convID').val() } )
       .done((message) => {
-        $('.messageContainer').append(`<div class='mes buy'>
+        $('.messageContainer').prepend(`<div class='mes buy'>
           <p><span class='sender'>${message.sender}</span>${message.message}</p>
           </div>`);
         $('#newMessage').val('');
