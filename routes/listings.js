@@ -131,7 +131,6 @@ module.exports = (db) => {
     templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
     db.query(queries.specificListing, [req.params.listingID])
       .then(data => {
-        console.log(templateVars);
         templateVars.item = data.rows[0];
         res.render('listing', templateVars);
       })
@@ -144,8 +143,6 @@ module.exports = (db) => {
 
   router.post("/browse/:listingID/delete", (req, res) => {
     templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
-    console.log(Object.keys.templateVars);
-    console.log(req.params);
     db.query(queries.deleteListing, [req.params.listingID])
       .then(() => {
         res.redirect('/');
