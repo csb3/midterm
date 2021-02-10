@@ -11,7 +11,6 @@ module.exports = (db) => {
   router.post("/create", (req, res) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);
-
     if (!permission) {
       console.log('ERROR: USER IS NOT AN ADMIN, NO PERMISSION TO CREATE LISTINGS');
       return res.redirect('/');
@@ -23,7 +22,7 @@ module.exports = (db) => {
 
     db.query(queries.createListing, [name, description, price, photo_url, user_id, weight, city])
       .then(data => {
-        console.log('New listing created');
+        // console.log('New listing created');
         res.redirect(`/api/listings/browse/${data.rows[0].id}`);
       })
       .catch(err => {
@@ -34,6 +33,7 @@ module.exports = (db) => {
   });
 
   router.get("/search", (req, res) => {
+
     checkPermission(req.session, false, templateVars, db);
 
     // fetch all the search options
@@ -83,7 +83,7 @@ module.exports = (db) => {
     queryString += ` ORDER BY creation_date DESC LIMIT $${queryParams.length};`;
 
     // print out the final query that will be run, for debugging only
-    printQuery(queryString, queryParams);
+    // printQuery(queryString, queryParams);
 
     templateVars.pageTitle = 'Search Results';
 
@@ -109,7 +109,7 @@ module.exports = (db) => {
     }
 
     // print out the final query that will be run, for debugging only
-    printQuery(queries.showFavorites, [req.session.userID]);
+    // printQuery(queries.showFavorites, [req.session.userID]);
 
     templateVars.pageTitle = 'Favorites';
 
@@ -143,7 +143,6 @@ module.exports = (db) => {
         } else {
           res.status(200).json({ favorited: false });
         }
-        // console.log('------- checkfavorite', data);
       })
       .catch((err) => {
         console.log(err);
@@ -160,11 +159,9 @@ module.exports = (db) => {
     }
 
     const listingID = req.body.listingID;
-    // console.log('listingID:',listingID, 'user:', templateVars.user.ID);
 
     db.query(queries.addToFavorites, [listingID, templateVars.user.ID])
       .then(data => {
-        // console.log('------- addfavorite', data);
         res.status(200).json({ status: true });
       })
       .catch(err => {
@@ -186,7 +183,6 @@ module.exports = (db) => {
 
     db.query(queries.removeFavorite, [listingID, templateVars.user.ID])
       .then((data) => {
-        // console.log('-------removeFavorite', data);
         res.status(200).json({ status: true });
       })
       .catch(err => {
@@ -217,7 +213,11 @@ module.exports = (db) => {
   });
 
   router.post("/browse/:listingID/delete", (req, res) => {
-    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
+
+    // checkPermission(req.session, req.params.listingID, templateVars, db)
+    //   .then((data) => {})
+
+    // templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
     db.query(queries.deleteListing, [req.params.listingID])
       .then(() => {
         res.redirect('/');

@@ -59,10 +59,12 @@
 
     <div class='listingsLabel'>
       <h2><%- pageTitle %></h2>
-      <button class="initialFilter">FILTER</button>
-      <div class='filter-options'>
+      <% if (pageTitle !== 'Favorites') { %>
+        <button class="initialFilter">FILTER</button>
+        <div class='filter-options'>
+        </div>
+      <% } %>
       </div>
-    </div>
 
 
     <section class='listings'>
@@ -83,7 +85,7 @@
         </div>
       </div>
     <% } %>
-  </section>
+    </section>
   </main>
 
 
