@@ -85,7 +85,7 @@ module.exports = (db) => {
     // print out the final query that will be run, for debugging only
     printQuery(queryString, queryParams);
 
-    templateVars.favoritePage = false;
+    templateVars.pageTitle = 'Search Results';
 
     db.query(queryString, queryParams)
       .then(data => {
@@ -111,7 +111,7 @@ module.exports = (db) => {
     // print out the final query that will be run, for debugging only
     printQuery(queries.showFavorites, [req.session.userID]);
 
-    templateVars.favoritePage = true;
+    templateVars.pageTitle = 'Favorites';
 
     db.query(queries.showFavorites, [req.session.userID])
       .then(data => {
