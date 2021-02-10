@@ -96,6 +96,24 @@ module.exports = (db) => {
       });
   });
 
+  router.get("/favourites", (req, res) => {
+    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
+    // print out the final query that will be run, for debugging only
+    printQuery(queries.showFavorites, [req.session.userID]);
+
+    db.query(queries.showFavorites, [req.session.userID])
+      .then(data => {
+        templateVars.recentListings = data.rows;
+        templateVars.showFeatured = false;
+        res.render('index', templateVars);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
   router.get("/addFavorite", (req, res) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);
