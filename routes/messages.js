@@ -67,7 +67,7 @@ module.exports = (db) => {
       .then((data) => {
         console.log(data);
         const recipientID = data.rows[0].seller_id;
-        const conversationID = data.rows[0].listing_id;
+        const conversationID = data.rows[0].id;
         console.log('sending new message to', conversationID);
 
         return db.query(queries.createMessage, [conversationID, senderID, recipientID, newMessage]);
