@@ -14,7 +14,7 @@ const queries = {
   JOIN users x ON x.id = recipient_id
   JOIN users y ON y.id = sender_id
   WHERE conversations.id = $1
-  ORDER BY timestamp;`,
+  ORDER BY timestamp DESC;`,
   fetchSingleMessage: `SELECT messages.*, conversations.*, x.user_name AS recipient_name, y.user_name AS sender_name
   FROM messages
   JOIN conversations ON conversation_id = conversations.id
