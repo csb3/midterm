@@ -29,7 +29,7 @@
 
   <section class='titleBanner'>
     <h1><%= item.name %> </h1>
-    <% if (user.userID === item.user_id) { %>
+    <% if (user.ID === item.user_id) { %>
       <% if(!item.deleted) { %>
         <% let deleteRoute = "/api/listings/browse/" + item.id + "/delete"; %>
       <form action="<%- deleteRoute %>" method="POST"><button class='delete'>DELETE</button></form>
