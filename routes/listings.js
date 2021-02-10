@@ -141,5 +141,32 @@ module.exports = (db) => {
       });
   });
 
+  router.post("/browse/:listingID/delete", (req, res) => {
+    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
+    db.query(queries.deleteListing, [req.params.listingID])
+      .then(() => {
+        res.redirect('/');
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.post("/browse/:listingID/markSold", (req, res) => {
+    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
+    db.query(queries.markAsSold, [req.params.listingID])
+      .then((data) => {
+        templateVars.item = data.rows[0];
+        res.render('listing', templateVars);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
   return router;
 };

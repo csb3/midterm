@@ -43,7 +43,7 @@ module.exports = (db) => {
             console.log('LOGGED IN', req.session.userName, req.session.userID, req.session.userCity);
             res.redirect('/');
           }
-      })
+        })
       .catch(err => {
         res
           .status(500)

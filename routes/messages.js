@@ -60,7 +60,7 @@ module.exports = (db) => {
               const sellerID = data.rows[0].user_id;
               // console.log(sellerID, senderID);
               return db.query(queries.createConversation, [targetConv, senderID, sellerID]);
-            })
+            });
         }
       })
       .then((data) => {
@@ -116,7 +116,7 @@ module.exports = (db) => {
     // printQuery(queries.listConversations, [currentUserID, currentUserID]);
     db.query(queries.listConversations, [currentUserID, currentUserID])
       .then((data) => {
-        const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, currentUserID))
+        const responseObj = JSON.stringify(reconstructConvoObjs(data.rows, currentUserID));
         // console.log("Conversations count:", data.rowCount);
         res.setHeader('Content-Type', 'application/json');
         res.end(responseObj);
