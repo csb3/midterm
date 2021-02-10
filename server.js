@@ -69,6 +69,7 @@ app.use("/api/messages", messagesRoutes(db));
 
 app.get("/", (req, res) => {
   const permission = checkPermission(req.session, false, templateVars, db);
+  templateVars.favoritePage = false;
   db.query(queries.browseRecentListings)
     .then(
       // results for recent listings
