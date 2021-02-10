@@ -2,7 +2,6 @@ const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
 const templateVars = {};
-templateVars.user = {userID: 1, admin: true};
 
 // for debugging only, prints out the parameterized query with all parameters filled in
 const printQuery = function(queryString, queryParams) {
@@ -127,6 +126,7 @@ module.exports = (db) => {
   });
 
   router.get("/browse/:listingID", (req, res) => {
+    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
     db.query(queries.specificListing, [req.params.listingID])
       .then(data => {
         templateVars.item = data.rows[0];
