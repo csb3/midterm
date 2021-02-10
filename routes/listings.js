@@ -127,6 +127,7 @@ module.exports = (db) => {
   });
 
   router.get("/browse/:listingID", (req, res) => {
+    templateVars.user = {userID: req.session.userID, isAdmin: req.session.isAdmin};
     db.query(queries.specificListing, [req.params.listingID])
       .then(data => {
         templateVars.item = data.rows[0];
