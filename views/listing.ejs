@@ -29,7 +29,7 @@
 
   <section class='titleBanner'>
     <h1><%= item.name %> </h1>
-    <% if (user.admin) { %>
+    <% if (user.userID === item.user_id) { %>
       <button class='delete'>DELETE</button>
       <button class='sold'>MARK SOLD</button>
     <% } %>
@@ -50,7 +50,7 @@
           <p>Posted by: <span><%= item.user_name %></span></p>
           <p>City: <span><%= item.city %></span></p>
           <p>Weight: <span><%= item.weight %>g</span></p>
-          <p>Posted: <span><%= item.creation_date %></span></p>
+          <p>Posted: <span><%= item.creation_date.toString().slice(0, 15) %></span></p>
       </span>
           <div class="message">
             <button>CONTACT THE SELLER</button>
