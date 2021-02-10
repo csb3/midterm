@@ -107,6 +107,8 @@ module.exports = (db) => {
     // print out the final query that will be run, for debugging only
     printQuery(queries.showFavorites, [req.session.userID]);
 
+    templateVars.favoritePage = true;
+
     db.query(queries.showFavorites, [req.session.userID])
       .then(data => {
         templateVars.recentListings = data.rows;
