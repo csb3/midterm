@@ -38,6 +38,7 @@ module.exports = (db) => {
             req.session.userName = data.rows[0].user_name;
             req.session.userID = data.rows[0].id;
             req.session.userCity = data.rows[0].city;
+            req.session.isAdmin = data.rows[0].is_admin;
 
             console.log('LOGGED IN', req.session.userName, req.session.userID, req.session.userCity);
             res.redirect('/');
