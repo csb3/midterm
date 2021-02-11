@@ -3,12 +3,12 @@ $(() => {
   const listingID = $('main').attr('id');
 
   const clearButton = (selector) => {
-    $('.titleBanner').off(selector);
+    $('.titleBanner').off();
     $(selector).remove();
   };
 
   const makeButton = (style) => {
-    const text = style === 'fas' ? 'Unfavourite' : 'Favourite';
+    const text = style === 'fas' ? 'UNFAVOURITE' : 'FAVOURITE';
     return $button = $(`<button class='favourite'><i class="${style} fa-heart"></i> ${text}</button>`);
   };
 

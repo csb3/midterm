@@ -7,11 +7,15 @@
   font-family: $headersText;
   font-size: 2.2em;
   width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 
   h1 {
     border-bottom: 8px solid $primaryColor;
     color: $quadColor;
     margin-bottom: 5px;
+    width: 100%;
   }
 
   button {
@@ -130,6 +134,13 @@ main {
       }
     }
 
+    p {
+      align-self: center;
+      font-style: italic;
+      font-size: 1.2em;
+      opacity: 90%;
+    }
+
   }
 
 }
@@ -179,7 +190,7 @@ main {
 
 
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 900px) {
 
   main {
     flex-direction: row;
