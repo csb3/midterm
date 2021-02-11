@@ -35,5 +35,22 @@
   </nav>
   <div class='banner'>
   </div>
+  <% if (alert.display) { %>
+    <div id="alert-container">
+      <div>
+        <div id="alert-image">
+          <img src="<%- alert.picture %>" alt="" id="alert-image">
+        </div>
+        <div id="alert-text">
+          <%- alert.message %>
+        </div>
+      </div>
+    </div>
+    <script>
+      setTimeout(() => {
+        document.getElementById('alert-container').style.display = "none";
+      }, 2000);
+    </script>
+  <% } %>
 </header>
 

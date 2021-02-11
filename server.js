@@ -1,5 +1,4 @@
-
-const templateVars = {};
+const { alertMessages, evaluateAlert } = require('./lib/alertMessages');
 
 // load prewritten queries -DT
 const queries = require('./db/queries');
@@ -62,12 +61,14 @@ app.use("/api/listings", listingsRoutes(db));
 app.use("/api/messages", messagesRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
-
 // Home page
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
+  const templateVars = { alertMessages, alert: { display: false} };
+  evaluateAlert(templateVars, alertMessages, req);
+
   const permission = checkPermission(req.session, false, templateVars, db);
   templateVars.pageTitle = 'Latest Breads';
   db.query(queries.browseRecentListings)
@@ -93,7 +94,17 @@ app.get("/", (req, res) => {
     );
 });
 
+app.get('/test/:dynamic', (req, res) => {
+  if (req.query.param1) {
+    console.log(req.query.param1);
+  } else {
+    console.log('No query');
+  }
+});
+
+
 app.get('*', (req, res) => {
+  const templateVars = { alertMessages, alert: { display: false} };
   checkPermission(req.session, false, templateVars, db);
   templateVars.pageTitle = '404 Page Not Found';
   res.render('error', templateVars);

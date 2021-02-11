@@ -2,7 +2,7 @@ const { render } = require('ejs');
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
-const templateVars = {};
+const { alertMessages, evaluateAlert } = require('../lib/alertMessages');
 // helper functions
 const printQuery = require('../lib/printQuery');
 const { checkPermission } = require('../lib/routeHelpers');
@@ -41,10 +41,11 @@ module.exports = (db) => {
 
   router.post("/create", (req, res) => {
 
+    const templateVars = {};
+
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
-      console.log('ERROR: YOU MUST BE LOGGED IN TO SEND MESSAGES');
-      return res.redirect('/');
+      return res.redirect('/?alert=401E');
     }
 
     const newMessage = req.body.message;
@@ -103,19 +104,17 @@ module.exports = (db) => {
 
   router.post("/conversation", (req, res) => {
 
+    const templateVars = {};
+
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
-      console.log('ERROR: YOU MUST BE LOGGED IN TO VIEW CONVERSATIONS');
-      return res.redirect('/');
+      return res.redirect('/?alert=401F');
     }
 
     const conversationID = req.body.convID;
-    // console.log('----------CONVERSATION ID:' ,conversationID);
-    // printQuery(queries.listMessages, [conversationID]);
     db.query(queries.listMessages, [conversationID])
       .then((data) => {
         const messagesString = JSON.stringify(reconstructMessageObjs(data.rows));
-        // console.log(data.rows);
         res.setHeader('Content-Type', 'application/json');
         res.end(messagesString);
       })
@@ -128,10 +127,11 @@ module.exports = (db) => {
 
   router.post("/conversations", (req, res) => {
 
+    templateVars = {};
+
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
-      console.log('ERROR: YOU MUST BE LOGGED IN TO SEND MESSAGES');
-      return res.redirect('/');
+      return res.redirect('/?alert=401G');
     }
 
     db.query(queries.listConversations, [templateVars.user.ID, templateVars.user.ID])
