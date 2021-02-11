@@ -8,6 +8,15 @@ const { checkPermission } = require('../lib/routeHelpers');
 
 module.exports = (db) => {
 
+  router.get("/create", (req, res) => {
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
+      console.log('ERROR: USER IS NOT AN ADMIN, NO PERMISSION TO CREATE LISTINGS');
+      return res.redirect('/');
+    }
+    res.render('create', templateVars);
+  });
+
   router.post("/create", (req, res) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);

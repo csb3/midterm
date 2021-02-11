@@ -93,10 +93,6 @@ app.get("/", (req, res) => {
     );
 });
 
-app.get('/testingroute', (req, res) => {
-  res.render('create', templateVars);
-})
-
 app.get('*', (req, res) => {
   checkPermission(req.session, false, templateVars, db);
   templateVars.pageTitle = '404 Page Not Found';
