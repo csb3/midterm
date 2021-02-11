@@ -1,0 +1,28 @@
+#alert-container {
+  z-index: 99999;
+  position: fixed;
+  top: 120px;
+  left: 0;
+  width: 100%;
+}
+
+#alert-container>div {
+  width: 500px;
+  margin: auto;
+  border: 5px solid #f5c462;
+  background-color:#ffffff;
+  padding: 2em;
+  border-radius: 20px 20px 20px 20px;
+  -moz-border-radius: 20px 20px 20px 20px;
+  -webkit-border-radius: 20px 20px 20px 20px;
+  display: flex;
+}
+
+#alert-image {
+  max-width: 100px;
+}
+
+#alert-text {
+  font-size: 1.5em;
+  padding: 1em;
+}
