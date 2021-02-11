@@ -2,6 +2,7 @@ const { Template } = require('ejs');
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
+// const alertMessages = require('./lib/alertMessages');
 const templateVars = {};
 // helper functions
 const printQuery = require('../lib/printQuery');
@@ -43,8 +44,7 @@ module.exports = (db) => {
             req.session.userID = data.rows[0].id;
             req.session.userCity = data.rows[0].city;
             req.session.isAdmin = data.rows[0].is_admin;
-            // console.log('LOGGED IN', req.session.userName, req.session.userID, req.session.userCity);
-            res.redirect('/');
+            res.redirect('/?alert=200C');
           }
         })
       .catch(err => {
@@ -57,7 +57,7 @@ module.exports = (db) => {
   router.get("/logout", (req, res) => {
     // clear login cookie
     req.session = null;
-    res.redirect('/');
+    res.redirect('/?alert=200D');
   });
 
   router.get("/internal", (req, res) => {

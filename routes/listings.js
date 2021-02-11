@@ -1,18 +1,19 @@
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
-const templateVars = {};
+// const alertMessages = require('./lib/alertMessages');
+const templateVars = { };
 // helper functions
 const printQuery = require('../lib/printQuery');
 const { checkPermission } = require('../lib/routeHelpers');
+
 
 module.exports = (db) => {
 
   router.get("/create", (req, res) => {
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
-      console.log('ERROR: USER IS NOT AN ADMIN, NO PERMISSION TO CREATE LISTINGS');
-      return res.redirect('/');
+      return res.redirect('/?alert=401A');
     }
     res.render('create', templateVars);
   });
@@ -21,8 +22,7 @@ module.exports = (db) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
-      console.log('ERROR: USER IS NOT AN ADMIN, NO PERMISSION TO CREATE LISTINGS');
-      return res.redirect('/');
+      return res.redirect('/?alert=401A');
     }
 
     let { name, description, price, photo_url, user_id, weight, city } = req.body;
@@ -31,8 +31,7 @@ module.exports = (db) => {
 
     db.query(queries.createListing, [name, description, price, photo_url, user_id, weight, city])
       .then(data => {
-        // console.log('New listing created');
-        res.redirect(`/api/listings/browse/${data.rows[0].id}`);
+        res.redirect(`/api/listings/browse/${data.rows[0].id}?alert=201A`);
       })
       .catch(err => {
         res
@@ -113,8 +112,7 @@ module.exports = (db) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
-      console.log('ERROR: YOU MUST BE LOGGED IN TO VIEW YOUR FAVORITES.');
-      return res.redirect('/');
+      return res.redirect('/?alert=401B');
     }
 
     // print out the final query that will be run, for debugging only
@@ -139,8 +137,7 @@ module.exports = (db) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
-      console.log('ERROR: YOU MUST BE LOGGED IN TO CHECK FAVORITES.');
-      return res.redirect('/');
+      return res.redirect('/?alert=401C');
     }
 
     const listingID = req.body.listingID;
@@ -163,8 +160,7 @@ module.exports = (db) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
-      console.log('ERROR: YOU MUST BE LOGGED IN TO ADD/REMOVE FAVORITES.');
-      return res.redirect('/');
+      return res.redirect('/?alert=401D');
     }
 
     const listingID = req.body.listingID;
@@ -184,8 +180,7 @@ module.exports = (db) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
-      console.log('ERROR: YOU MUST BE LOGGED IN TO ADD/REMOVE FAVORITES.');
-      return res.redirect('/');
+      return res.redirect('/?alert=401D');
     }
 
     const listingID = req.body.listingID;
@@ -210,8 +205,7 @@ module.exports = (db) => {
           templateVars.item = data.rows[0];
           res.render('listing', templateVars);
         } else {
-          console.log('ERROR: THE LISTING DOES NOT EXIST');
-          res.redirect('/');
+          res.redirect('/?alert=404A');
         }
       })
       .catch(err => {
@@ -234,7 +228,7 @@ module.exports = (db) => {
         }
       })
       .then(() => {
-        res.redirect('/');
+        res.redirect('/?alert=200A');
       })
       .catch(err => {
         res
@@ -249,7 +243,6 @@ module.exports = (db) => {
       .then((data) => {
         console.log(data);
         if (data.permission) {
-          console.log('LISTING MARKED AS SOLD');
           return db.query(queries.markAsSold, [req.params.listingID]);
         } else {
           return console.log('ERROR: YOU DO NOT HAVE PERMISSION TO MARK THIS LISTING AS SOLD.');
@@ -257,8 +250,7 @@ module.exports = (db) => {
       })
       .then((data) => {
         templateVars.item = data.rows[0];
-        // console.log(templateVars);
-        res.redirect('/api/listings/browse/' + templateVars.item.id);
+        res.redirect('/api/listings/browse/' + templateVars.item.id + '?alert=200B');
       })
       .catch(err => {
         res

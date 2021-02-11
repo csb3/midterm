@@ -1,5 +1,5 @@
-
-const templateVars = {};
+const { alertMessages, evaluateAlert } = require('./lib/alertMessages');
+const templateVars = { alertMessages, alert: false };
 
 // load prewritten queries -DT
 const queries = require('./db/queries');
@@ -62,12 +62,12 @@ app.use("/api/listings", listingsRoutes(db));
 app.use("/api/messages", messagesRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
-
 // Home page
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
+  evaluateAlert(templateVars, alertMessages, req);
   const permission = checkPermission(req.session, false, templateVars, db);
   templateVars.pageTitle = 'Latest Breads';
   db.query(queries.browseRecentListings)
