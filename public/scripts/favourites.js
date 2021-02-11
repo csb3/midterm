@@ -8,7 +8,8 @@ $(() => {
   };
 
   const makeButton = (style) => {
-    return $button = $(`<button class='favourite'><i class="${style} fa-heart"></i></button>`);
+    const text = style === 'fas' ? 'Unfavourite' : 'Favourite';
+    return $button = $(`<button class='favourite'><i class="${style} fa-heart"></i> ${text}</button>`);
   };
 
   const isFavourite = (listingID) => {
