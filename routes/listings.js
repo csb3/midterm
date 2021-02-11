@@ -62,9 +62,7 @@ module.exports = (db) => {
     let queryParams = [];
 
     // base query
-    let queryString = `SELECT listings.*, favorites.user_id AS favorited
-    FROM listings
-    LEFT OUTER JOIN favorites ON favorites.listing_id = listings.id
+    let queryString = `SELECT * FROM listings
     WHERE sold_date is NULL
     AND deleted = false\n`;
 
@@ -105,8 +103,9 @@ module.exports = (db) => {
 
     db.query(queryString, queryParams)
       .then(data => {
-        templateVars.recentListings = data.rows;
         templateVars.showFeatured = false;
+        templateVars.recentListings = data.rows;
+        console.log(data.rows);
         res.render('index', templateVars);
       })
       .catch(err => {
