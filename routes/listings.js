@@ -8,6 +8,15 @@ const { checkPermission } = require('../lib/routeHelpers');
 
 module.exports = (db) => {
 
+  router.get("/create", (req, res) => {
+    const permission = checkPermission(req.session, false, templateVars, db);
+    if (!permission) {
+      console.log('ERROR: USER IS NOT AN ADMIN, NO PERMISSION TO CREATE LISTINGS');
+      return res.redirect('/');
+    }
+    res.render('create', templateVars);
+  });
+
   router.post("/create", (req, res) => {
 
     const permission = checkPermission(req.session, false, templateVars, db);
@@ -246,9 +255,10 @@ module.exports = (db) => {
           return console.log('ERROR: YOU DO NOT HAVE PERMISSION TO MARK THIS LISTING AS SOLD.');
         }
       })
-      .then(() => {
+      .then((data) => {
         templateVars.item = data.rows[0];
-        res.redirect('/api/listings/browse/' + breadID);
+        // console.log(templateVars);
+        res.redirect('/api/listings/browse/' + templateVars.item.id);
       })
       .catch(err => {
         res

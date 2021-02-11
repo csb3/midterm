@@ -35,60 +35,15 @@
 
 
   <main>
-  <!-- Rotating featured breads -->
+
     <section class='featuredItems'>
-      <% if (showFeatured) { %>
-        <% let i = 0; %>
-        <% for (const bread of featuredListings) { %>
-          <% if (bread.featured && i < 2 ) { %>
-            <div class='feature'>
-              <h4 class='featureTag'>FEATURED</h4>
-              <img src="<%- bread.photo_url %>" alt="A loaf of bread">
-              <div class='featureDetails'>
-                <h1><%= bread.name %></h1>
-                <span class="location"><%= bread.city %></span>
-                <p>ONLY $<%=(bread.price / 100).toFixed(2) %>!!</p>
-                <p class='featureDescription'><%= bread.description.substring(0, 100) %></p>
-                <% let route = "/api/listings/browse/" + bread.id; %>
-                <a href="<%- route %>"><button> BUY NOW! </button></a>
-              </div>
-            </div>
-            <% i++; %>
-          <% } %>
-        <% } %>
-      <% } %>
-
-
-    </section>
-
-    <div class='listingsLabel'>
-      <h2><%- pageTitle %></h2>
-      <% if (pageTitle !== 'Favorites') { %>
-        <button class="initialFilter">FILTER</button>
-        <div class='filter-options'>
-        </div>
-      <% } %>
-      </div>
-
-
-    <section class='listings'>
-    <% for (const bread of recentListings) { %>
-      <div class ='listingItem'>
-        <img src="<%- bread.photo_url %>" alt="A loaf of bread">
-        <div class='details'>
-          <h3><%= bread.name %></h3>
-          <span class="location"><%= bread.city %></span>
-          <p>$<%= (bread.price / 100).toFixed(2) %></p>
-          <p class='description'><%= bread.description.substring(0, 100);%>
-          <% if (bread.description.length > 100) { %>
-            . . .
-          <% } %>
-          </p>
-          <% let route = "/api/listings/browse/" + bread.id; %>
-          <a href="<%- route %>"><button> MORE INFO </button></a>
-        </div>
-      </div>
-    <% } %>
+      <h1><%- pageTitle %></h1>
+      <p>
+        The page you requested could not be found.
+      </p>
+      <p>
+        Maybe some bread'll cheer you up?
+      </p>
     </section>
   </main>
 
