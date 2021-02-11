@@ -2,8 +2,7 @@ const { Template } = require('ejs');
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
-// const alertMessages = require('./lib/alertMessages');
-const templateVars = {};
+const { alertMessages, evaluateAlert } = require('../lib/alertMessages');
 // helper functions
 const printQuery = require('../lib/printQuery');
 const { checkPermission } = require('../lib/routeHelpers');
@@ -11,6 +10,9 @@ const { checkPermission } = require('../lib/routeHelpers');
 module.exports = (db) => {
 
   router.get("/create", (req, res) => {
+
+    const templateVars = { alertMessages, alert: { display: false} };
+    evaluateAlert(templateVars, alertMessages, req);
     db.query(queries.createUser)
       .then(data => {
         // pass
@@ -23,6 +25,10 @@ module.exports = (db) => {
   });
 
   router.get("/makeAdmin", (req, res) => {
+
+    const templateVars = { alertMessages, alert: { display: false} };
+    evaluateAlert(templateVars, alertMessages, req);
+
     db.query(queries.makeAdmin)
       .then(data => {
         // pass
@@ -35,6 +41,10 @@ module.exports = (db) => {
   });
 
   router.get("/login/:userID", (req, res) => {
+
+    const templateVars = { alertMessages, alert: { display: false} };
+    evaluateAlert(templateVars, alertMessages, req);
+
     const targetID = req.params.userID;
     db.query('SELECT * FROM users WHERE id = $1 LIMIT 1;', [targetID])
       .then(
@@ -61,7 +71,8 @@ module.exports = (db) => {
   });
 
   router.get("/internal", (req, res) => {
-    let templateVars = {};
+    const templateVars = { alertMessages, alert: { display: false} };
+    evaluateAlert(templateVars, alertMessages, req);
 
     if (req.session.userID) {
       templateVars = { loggedIn: true };

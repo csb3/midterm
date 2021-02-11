@@ -1,5 +1,4 @@
 const { alertMessages, evaluateAlert } = require('./lib/alertMessages');
-const templateVars = { alertMessages, alert: false };
 
 // load prewritten queries -DT
 const queries = require('./db/queries');
@@ -67,7 +66,9 @@ app.use("/api/messages", messagesRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
+  const templateVars = { alertMessages, alert: { display: false} };
   evaluateAlert(templateVars, alertMessages, req);
+
   const permission = checkPermission(req.session, false, templateVars, db);
   templateVars.pageTitle = 'Latest Breads';
   db.query(queries.browseRecentListings)
@@ -94,6 +95,7 @@ app.get("/", (req, res) => {
 });
 
 app.get('*', (req, res) => {
+  const templateVars = { alertMessages, alert: { display: false} };
   checkPermission(req.session, false, templateVars, db);
   templateVars.pageTitle = '404 Page Not Found';
   res.render('error', templateVars);

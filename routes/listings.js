@@ -1,8 +1,7 @@
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
-// const alertMessages = require('./lib/alertMessages');
-const templateVars = { };
+const { alertMessages, evaluateAlert } = require('../lib/alertMessages');
 // helper functions
 const printQuery = require('../lib/printQuery');
 const { checkPermission } = require('../lib/routeHelpers');
@@ -11,6 +10,10 @@ const { checkPermission } = require('../lib/routeHelpers');
 module.exports = (db) => {
 
   router.get("/create", (req, res) => {
+
+    const templateVars = { alertMessages, alert: { display: false} };
+    evaluateAlert(templateVars, alertMessages, req);
+
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
       return res.redirect('/?alert=401A');
@@ -19,6 +22,8 @@ module.exports = (db) => {
   });
 
   router.post("/create", (req, res) => {
+
+    const templateVars = {};
 
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
@@ -41,6 +46,9 @@ module.exports = (db) => {
   });
 
   router.get("/search", (req, res) => {
+
+    const templateVars = { alertMessages, alert: { display: false} };
+    evaluateAlert(templateVars, alertMessages, req);
 
     checkPermission(req.session, false, templateVars, db);
 
@@ -110,6 +118,9 @@ module.exports = (db) => {
 
   router.get("/favorites", (req, res) => {
 
+    const templateVars = { alertMessages, alert: { display: false} };
+    evaluateAlert(templateVars, alertMessages, req);
+
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
       return res.redirect('/?alert=401B');
@@ -135,6 +146,8 @@ module.exports = (db) => {
 
   router.post("/checkFavorite", (req, res) => {
 
+    const templateVars = {};
+
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
       return res.redirect('/?alert=401C');
@@ -158,6 +171,8 @@ module.exports = (db) => {
 
   router.post("/addFavorite", (req, res) => {
 
+    const templateVars = {};
+
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
       return res.redirect('/?alert=401D');
@@ -178,6 +193,8 @@ module.exports = (db) => {
 
   router.post("/removeFavorite", (req, res) => {
 
+    templateVars = {};
+
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
       return res.redirect('/?alert=401D');
@@ -197,6 +214,10 @@ module.exports = (db) => {
   });
 
   router.get("/browse/:listingID", (req, res) => {
+
+    const templateVars = { alertMessages, alert: { display: false} };
+    evaluateAlert(templateVars, alertMessages, req);
+
     checkPermission(req.session, false, templateVars, db); // just assigns templateVars
 
     db.query(queries.specificListing, [req.params.listingID])
@@ -216,6 +237,8 @@ module.exports = (db) => {
   });
 
   router.post("/browse/:listingID/delete", (req, res) => {
+
+    templateVars = {};
 
     checkPermission(req.session, req.params.listingID, templateVars, db)
       .then((data) => {
@@ -238,6 +261,8 @@ module.exports = (db) => {
   });
 
   router.post("/browse/:listingID/markSold", (req, res) => {
+
+    const templateVars = {};
 
     checkPermission(req.session, req.params.listingID, templateVars, db)
       .then((data) => {

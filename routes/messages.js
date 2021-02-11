@@ -2,8 +2,7 @@ const { render } = require('ejs');
 const express = require('express');
 const router  = express.Router();
 const queries = require('../db/queries');
-// const alertMessages = require('./lib/alertMessages');
-const templateVars = { };
+const { alertMessages, evaluateAlert } = require('../lib/alertMessages');
 // helper functions
 const printQuery = require('../lib/printQuery');
 const { checkPermission } = require('../lib/routeHelpers');
@@ -41,6 +40,8 @@ const reconstructMessageObjs = function(messageArray) {
 module.exports = (db) => {
 
   router.post("/create", (req, res) => {
+
+    const templateVars = {};
 
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
@@ -103,6 +104,8 @@ module.exports = (db) => {
 
   router.post("/conversation", (req, res) => {
 
+    const templateVars = {};
+
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
       return res.redirect('/?alert=401F');
@@ -123,6 +126,8 @@ module.exports = (db) => {
   });
 
   router.post("/conversations", (req, res) => {
+
+    templateVars = {};
 
     const permission = checkPermission(req.session, false, templateVars, db);
     if (!permission) {
