@@ -53,7 +53,7 @@ const queries = {
   removeFavorite: `DELETE FROM favorites WHERE listing_id=$1 AND user_id=$2;`,
   showFeatured: `SELECT *
   FROM listings
-  WHERE featured = true AND deleted = false
+  WHERE featured = true AND deleted = false AND sold_date IS NULL
   ORDER BY creation_date DESC
   LIMIT 2;`,
   deleteListing: `UPDATE listings SET deleted = true WHERE id = $1 RETURNING *;`,
