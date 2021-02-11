@@ -7,6 +7,7 @@
   justify-content: space-around;
   align-items: center;
   width: 95%;
+  gap: 25px;
 
 
   div {
@@ -18,7 +19,6 @@
     border-radius: 5px;
     margin-top:40px;
     justify-content: space-between;
-    // align-items: center;
     position: relative;
 
 
@@ -29,7 +29,8 @@
       border: 3px solid $tertiaryColor;
       margin-bottom: 0.5em;
       margin-top: 0.5em;
-      margin-left: 0.5em;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .featureDetails {
@@ -69,15 +70,16 @@
         height: 80px;
         font-size: 1.1em;
         margin-top: 0px;
-        margin-bottom: 5px;
+        padding-bottom: 10px;
         color: $baseColor;
+        overflow: scroll;
       }
 
       p:first-of-type {
         font-size: 1.5em;
         font-family: $headersText;
         font-weight: bold;
-        color: $secondaryColor;
+        color: $quadColor;
         margin: 5px 0;
       }
 
@@ -125,7 +127,7 @@
 }
 
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1170px) {
   .featuredItems {
     flex-direction:row;
     gap: 2%;
