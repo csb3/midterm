@@ -22,7 +22,7 @@ main {
     background-color: #FCDE9C;
     border-radius: 5px;
     margin-top:40px;
-    width: 600px;
+    width: 100%;
 
 
     img {
@@ -114,10 +114,14 @@ main {
 }
 
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1170px) {
   .listings {
     flex-direction: row;
     gap: 0.5%;
     flex-wrap: wrap;
+
+    div {
+      width: 600px;
+    }
   }
 }
