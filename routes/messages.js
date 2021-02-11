@@ -55,8 +55,9 @@ module.exports = (db) => {
     // check if conversation already exists
     db.query(`SELECT *
     FROM conversations
-    WHERE id = $1;
-    `, [targetConv])
+    WHERE listing_id = $1
+    AND buyer_id = $2
+    ;`, [targetConv, senderID])
       .then((data)=>{
         if (data.rows.length !== 0) {
           // conversation exists, add new message to it. (proceed to next `then` statement)
