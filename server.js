@@ -94,6 +94,15 @@ app.get("/", (req, res) => {
     );
 });
 
+app.get('/test/:dynamic', (req, res) => {
+  if (req.query.param1) {
+    console.log(req.query.param1);
+  } else {
+    console.log('No query');
+  }
+});
+
+
 app.get('*', (req, res) => {
   const templateVars = { alertMessages, alert: { display: false} };
   checkPermission(req.session, false, templateVars, db);

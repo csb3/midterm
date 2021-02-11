@@ -217,8 +217,11 @@ module.exports = (db) => {
 
     const templateVars = { alertMessages, alert: { display: false} };
     evaluateAlert(templateVars, alertMessages, req);
+    console.log(templateVars);
 
     checkPermission(req.session, false, templateVars, db); // just assigns templateVars
+    console.log(templateVars);
+
 
     db.query(queries.specificListing, [req.params.listingID])
       .then(data => {
