@@ -246,9 +246,10 @@ module.exports = (db) => {
           return console.log('ERROR: YOU DO NOT HAVE PERMISSION TO MARK THIS LISTING AS SOLD.');
         }
       })
-      .then(() => {
+      .then((data) => {
         templateVars.item = data.rows[0];
-        res.redirect('/api/listings/browse/' + breadID);
+        // console.log(templateVars);
+        res.redirect('/api/listings/browse/' + templateVars.item.id);
       })
       .catch(err => {
         res
