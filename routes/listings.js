@@ -105,7 +105,7 @@ module.exports = (db) => {
       .then(data => {
         templateVars.showFeatured = false;
         templateVars.recentListings = data.rows;
-        console.log(data.rows);
+        // console.log(data.rows);
         res.render('index', templateVars);
       })
       .catch(err => {
@@ -216,10 +216,10 @@ module.exports = (db) => {
 
     const templateVars = { alertMessages, alert: { display: false} };
     evaluateAlert(templateVars, alertMessages, req);
-    console.log(templateVars);
+    // console.log(templateVars);
 
     checkPermission(req.session, false, templateVars, db); // just assigns templateVars
-    console.log(templateVars);
+    // console.log(templateVars);
 
 
     db.query(queries.specificListing, [req.params.listingID])
@@ -244,7 +244,7 @@ module.exports = (db) => {
 
     checkPermission(req.session, req.params.listingID, templateVars, db)
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.permission) {
           console.log('LISTING DELETED');
           return db.query(queries.deleteListing, [req.params.listingID]);
