@@ -31,7 +31,7 @@ const reconstructMessageObjs = function(messageArray) {
     newObj.recipient = obj.recipient_name;
     newObj.sender = obj.sender_name;
     newObj.message = obj.content;
-    newObj.conversationID = obj.conversation_id;
+    newObj.conversationID = obj.listing_id;
     newArr.push(newObj);
   }
   return newArr;
@@ -52,21 +52,23 @@ module.exports = (db) => {
     const targetConv = req.body.item;
     const senderID = req.session.userID;
 
+    // if ()
+
     // check if conversation already exists
     db.query(`SELECT *
     FROM conversations
     WHERE listing_id = $1
     AND buyer_id = $2
-    ;`, [targetConv, senderID])
+    ;`, [targetConv, senderID, senderID])
       .then((data)=>{
         if (data.rows.length !== 0) {
           // conversation exists, add new message to it. (proceed to next `then` statement)
-          // console.log(`------------ Conversation (${targetConv}) exists.`);
+          console.log(`------------ Conversation (${data.rows[0].id}) exists.`);
           return data;
         } else {
           // conversation does not exist, create it. (find seller first)
-          // console.log(`------------ Conversation (${targetConv}) does not exist, creating it now.`);
-          return db.query('SELECT user_id FROM listings where id = $1', [targetConv])
+          console.log(`------------ Conversation for listing (${targetConv}) does not exist, creating it now.`);
+          return db.query('SELECT user_id FROM listings where id = $1', [targetConv]) // this is the listing ID
             .then((data) => {
               const sellerID = data.rows[0].user_id;
               // console.log(sellerID, senderID);
@@ -75,15 +77,15 @@ module.exports = (db) => {
         }
       })
       .then((data) => {
-        // console.log(data);
+        console.log('newly created conversation ID:' ,data.rows[0].id);
         const recipientID = data.rows[0].seller_id;
         const conversationID = data.rows[0].id;
-        // console.log('sending new message to', conversationID);
+        console.log('sending new message to', conversationID);
 
         return db.query(queries.createMessage, [conversationID, senderID, recipientID, newMessage]);
       })
       .then((data) => {
-        // console.log('message sent');
+        console.log('message sent');
         // printQuery(queries.fetchSingleMessage, [data.rows[0].id]);
         return db.query(queries.fetchSingleMessage, [data.rows[0].id]);
       })
@@ -115,6 +117,7 @@ module.exports = (db) => {
     const conversationID = req.body.convID;
     db.query(queries.listMessages, [conversationID])
       .then((data) => {
+        console.log('----------- raw messages', data.rows);
         const messagesString = JSON.stringify(reconstructMessageObjs(data.rows));
         res.setHeader('Content-Type', 'application/json');
         res.end(messagesString);
