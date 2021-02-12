@@ -1,6 +1,6 @@
 -- Users table seeds here
-INSERT INTO users (user_name, email, password, city, is_admin) VALUES ('user1', 'user@example.com', 'password', 'Edmonton', true);
-INSERT INTO users (user_name, email, password, city, is_admin) VALUES ('user2', 'user@example.com', 'password', 'Vancouver', false);
+INSERT INTO users (user_name, email, password, city, is_admin) VALUES ('Cass', 'user@example.com', 'password', 'Edmonton', true);
+INSERT INTO users (user_name, email, password, city, is_admin) VALUES ('Daryl', 'user@example.com', 'password', 'Vancouver', false);
 INSERT INTO users (user_name, email, password, city, is_admin) VALUES ('user3', 'user@example.com', 'password', 'Montreal', false);
 INSERT INTO users (user_name, email, password, city, is_admin) VALUES ('user4', 'user@example.com', 'password', 'Kelowna', false);
 INSERT INTO users (user_name, email, password, city, is_admin) VALUES ('user5', 'user@example.com', 'password', 'Victoria', false);
