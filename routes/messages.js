@@ -32,6 +32,7 @@ const reconstructMessageObjs = function(messageArray) {
     newObj.sender = obj.sender_name;
     newObj.message = obj.content;
     newObj.conversationID = obj.conversation_id;
+    newObj.listingID = obj.listing_id;
     newArr.push(newObj);
   }
   return newArr;
@@ -49,42 +50,43 @@ module.exports = (db) => {
     }
 
     const newMessage = req.body.message;
-    const targetConv = req.body.item;
-    const senderID = req.session.userID;
+    const targetConv = req.body.convID;
+    const targetListing = req.body.listingID;
+    const currentUserID = req.session.userID;
 
-    // check if conversation already exists
-    db.query(`SELECT *
-    FROM conversations
-    WHERE listing_id = $1
-    AND buyer_id = $2
-    ;`, [targetConv, senderID])
-      .then((data)=>{
-        if (data.rows.length !== 0) {
-          // conversation exists, add new message to it. (proceed to next `then` statement)
-          // console.log(`------------ Conversation (${targetConv}) exists.`);
-          return data;
+    console.log('target conv', targetConv);
+
+    let sellerID = [];
+
+
+    // find the seller (have to do this no matter what)
+    db.query('SELECT user_id FROM listings where id = $1', [targetListing])
+      .then((data) => { // this is the seller obj
+        sellerID[0] = data.rows[0].user_id;
+        console.log('the seller ID is', sellerID[0]);
+
+        console.log(targetConv === 'no');
+
+        if (targetConv === 'no') {
+          console.log(`conversation does not exist, will create new conversation with listing ${targetListing}, current user: ${currentUserID}, seller: ${sellerID}`);
+          return db.query(queries.createConversation, [targetListing, currentUserID, sellerID[0]]);
         } else {
-          // conversation does not exist, create it. (find seller first)
-          // console.log(`------------ Conversation (${targetConv}) does not exist, creating it now.`);
-          return db.query('SELECT user_id FROM listings where id = $1', [targetConv])
-            .then((data) => {
-              const sellerID = data.rows[0].user_id;
-              // console.log(sellerID, senderID);
-              return db.query(queries.createConversation, [targetConv, senderID, sellerID]);
-            });
+          console.log(`conversation (${targetConv}) exists`);
+          // pseudo conversation object containing ID only
+          const convObj = {
+            rows: [{ id: targetConv}]
+          };
+          return convObj;
         }
       })
       .then((data) => {
-        // console.log(data);
-        const recipientID = data.rows[0].seller_id;
-        const conversationID = data.rows[0].id;
-        // console.log('sending new message to', conversationID);
 
-        return db.query(queries.createMessage, [conversationID, senderID, recipientID, newMessage]);
+        const conversationID = data.rows[0].id;
+        console.log(' adnt the seller id is ...', sellerID[0]);
+        return db.query(queries.createMessage, [conversationID, currentUserID, sellerID[0], newMessage]);
       })
       .then((data) => {
-        // console.log('message sent');
-        // printQuery(queries.fetchSingleMessage, [data.rows[0].id]);
+        console.log('message sent');
         return db.query(queries.fetchSingleMessage, [data.rows[0].id]);
       })
       .then((data) => {
@@ -115,6 +117,7 @@ module.exports = (db) => {
     const conversationID = req.body.convID;
     db.query(queries.listMessages, [conversationID])
       .then((data) => {
+        console.log('----------- raw messages', data.rows);
         const messagesString = JSON.stringify(reconstructMessageObjs(data.rows));
         res.setHeader('Content-Type', 'application/json');
         res.end(messagesString);

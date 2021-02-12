@@ -45,6 +45,7 @@ const generateControls = (convID) => {
   <div class='controls'>
     <label for "newMessage">New Message:</label>
     <input type="hidden" value="${convID}" id="convID">
+    <input type="hidden" value="${convID}" id="listingID">
     <textarea name="newMessage" id="newMessage"></textarea>
     <button class='send'>Send</button>
     <button class='back'>Back</button>
@@ -89,7 +90,7 @@ const generateAllMessages = (elements, currentUser) => {
 
   $('nav').on('click', '.send', function(event) {
 
-    $.post('/api/messages/create', { message: $('#newMessage').val(), item: $('#convID').val() } )
+    $.post('/api/messages/create', { message: $('#newMessage').val(), convID: $('#convID').val(), listingID: $('#listingID').val() } )
       .done((message) => {
         $('.messageContainer').prepend(`<div class='mes buy'>
           <p><span class='sender'>${message.sender}</span>${message.message}</p>
