@@ -12,6 +12,7 @@
     border: 4px solid $secondaryColor;
     align-items: center;
     padding-bottom: 0.5em;
+    overflow: auto;
 
     i {
       background-color: $secondaryColor;
